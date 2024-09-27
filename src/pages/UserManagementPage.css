@@ -1,0 +1,23 @@
+.user-management-container{
+    /* border:1px solid black; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+   
+  
+}
+.user-management-search-export-container{
+    /* border:1px solid red; */
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    width: 100%;
+    /* display: flex;
+    align-items: center;
+    justify-content: space-between; */
+    margin-top: 50px;
+    
+}
+

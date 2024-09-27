@@ -1,0 +1,7 @@
+.school-managment-container{
+  /* border:1px solid blue; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3%;
+}

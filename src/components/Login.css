@@ -1,0 +1,8 @@
+.container-login{
+    width: 40%;
+    height: 55vh;
+    position: relative;
+   
+    border-radius: 4px;
+    border:1px solid red; 
+}

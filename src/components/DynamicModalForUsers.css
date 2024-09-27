@@ -1,0 +1,95 @@
+h2{
+  font-weight: 500;
+  padding-bottom: 20px;
+}
+option{
+  font-family: "Kumbh Sans", sans-serif;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  }
+  
+  .modal-content {
+    background: #D2CEAA;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 80%;
+    font-family: "Kumbh Sans", sans-serif;
+    text-align: center;
+    
+  }
+  
+  .modal-actions {
+    margin-top: 20px;
+    padding-inline-start: 44%;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-family: "Kumbh Sans", sans-serif;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .save-btn {
+    background-color: green;
+    color: white;
+  }
+  
+  .cancel-btn {
+    background-color: red;
+    color: white;
+  }
+  
+  .close-btn {
+    background-color: green;
+    color: white;
+  }
+  
+  .confirm-btn{
+    background-color: green;
+    color: white;
+    
+  }
+  .modal-edit-content-top{
+    display: flex;
+    justify-content: space-around;
+    font-weight: 600;
+    padding: 14px 0;
+    
+  }
+  .modal-edit-contentn-materia{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+  }
+  .modal-edit-contentn-materia label{
+    font-weight: 600;
+    font-size: 16px;
+  }
+  select{
+    border: 1x solid violet;
+  }
+  .modal-edit-content-bottom{
+    font-weight: 600;
+    height: 80px;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }

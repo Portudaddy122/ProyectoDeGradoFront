@@ -1,0 +1,28 @@
+.btn-actions-text-container{
+    height: 25px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Kumbh Sans", sans-serif;
+    color: white;
+    padding: 0 20px;
+}
+.red{
+    background-color: #992500;
+}
+.green{
+    background-color: #006414;
+}
+.yellow{
+    background-color: #BFB91A;
+}
+.btn-actions-text-container.red.clicked{
+    background-color: #cc3300;
+}
+.btn-actions-text-container.green.clicked{
+    background-color: #009929;
+}
+.btn-actions-text-container.yellow.clicked{
+    background-color: #f4ec09;
+}

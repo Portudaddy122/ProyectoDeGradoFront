@@ -1,0 +1,7 @@
+.btnLogout-container{
+    /* border:1px solid rgb(128, 62, 0); */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 20%;
+}

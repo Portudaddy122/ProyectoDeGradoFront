@@ -1,0 +1,20 @@
+.container-UserManagemet-Home{
+     /* border:1px solid black; */
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 20px;
+     position: relative;
+     
+    
+}
+
+
+.Card-Dinamc-Container{
+     display: flex;
+     display: inline-block;
+}
+.Card-Dinamc-Container{
+     padding-top: 10%;
+}
+

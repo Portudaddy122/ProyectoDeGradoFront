@@ -1,0 +1,27 @@
+.user-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    border: 2px solid black;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .text-input-container,
+  .select-input-container,
+  .time-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  input, select {
+    border: 1.5px solid black;
+    border-radius: 5px;
+    padding: 5px;
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  
