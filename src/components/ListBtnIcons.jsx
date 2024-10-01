@@ -1,90 +1,46 @@
-import React, { useState } from 'react'
-
-
-
-import iconHome from '../assets/icons/home-2.svg'
-import iconUser from '../assets/icons/user.svg'
-
-import BtnIcon from './botones/BtnIcon'
+import React, { useState } from 'react';
+import iconHome from '../assets/icons/home-2.svg';
+import iconUser from '../assets/icons/user.svg';
+import BtnIcon from './botones/BtnIcon';
 
 const btnsIcons = [
-
-    
-    {
-        icon:iconHome,
-        text: 'Inicio',
-        dropdown:[
-            {text:'Agregar Usuario'},
-            {text:'Editar Usuario'},
-            {text:'Eliminar Usuario'}]
-            
-    },
-    {
-        icon:iconUser,
-        text: 'Gestión de Usuarios',
-        
-        
-        
-    },
-    {
-        icon:iconHome,
-        text: 'Listar Usuarios',
-       
-    },
-    {
-        icon:iconUser,
-        text: 'Gestión de Usuarios',
-        
-    },
-    {
-        icon:iconHome,
-        text: 'Listar Usuarios',
-       
-    }
-
-]
-
-const DropdownMenu = ({ options }) => {
-    return (
-        <div className="dropdown-menu">
-            {options.map((option, index) => (
-                <div
-                    key={index}
-                    className="dropdown-option"
-                    onClick={option.action}
-                >
-                    {option.text}
-                </div>
-            ))}
-        </div>
-    )
-}
+  {
+    icon: iconHome,
+    text: 'Inicio',
+    link: '',  // Ruta a UserManagementHome
+  },
+  {
+    icon: iconUser,
+    text: 'Gestión de Usuarios',
+    dropdown: [
+      { text: 'Listar Usuarios', link: '../pages/UserManagementPage.jsx' },  // Ruta a UserManagementPage
+    ]
+  }
+];
 
 const ListBtnIcons = () => {
-    const [openDropdownIndex, setOpenDropdownIndex] = useState(null)
+  const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
 
-    const handleDropdownToggle = (index) => {
-        setOpenDropdownIndex(openDropdownIndex === index ? null : index)
-    }
+  const handleDropdownToggle = (index) => {
+    setOpenDropdownIndex(openDropdownIndex === index ? null : index);
+  };
 
-    return (
-        <>
-            {btnsIcons.map((btns, index) => (
-                <div key={index}>
-                    <BtnIcon
-                        icon={btns.icon}
-                        text={btns.text}
-                        active={openDropdownIndex === index}
-                        onClick={() => handleDropdownToggle(index)}
-                    />
-                    {/* Mostrar el dropdown solo si el botón correspondiente está activo */}
-                    {openDropdownIndex === index && (
-                        <DropdownMenu options={btns.dropdown} />
-                    )}
-                </div>
-            ))}
-        </>
-    )
-}
+  return (
+    <>
+      {btnsIcons.map((btns, index) => (
+        <div key={index}>
+          <BtnIcon
+            icon={btns.icon}
+            text={btns.text}
+            link={btns.link}  // Pasamos la ruta al botón principal
+            active={openDropdownIndex === index}
+            onClick={() => handleDropdownToggle(index)}
+            dropdown={btns.dropdown}  // Pasamos las opciones del dropdown
+          />
+        </div>
+      ))}
+    </>
+  );
+};
 
-export default ListBtnIcons
+export default ListBtnIcons;

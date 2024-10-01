@@ -6,10 +6,9 @@ body {
     border-radius: 9px;
     overflow: hidden;
     border: 1.5px solid black;
-    width: 76%;
-    left: 10%;
-  
-    margin-left: auto;
+    width: 95%;
+    left: 0%;
+    margin-left: 90px;
 }
 
 .user-table {

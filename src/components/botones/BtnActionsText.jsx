@@ -10,6 +10,8 @@ const BtnActionsText = ({color,text,onClick}) => {
           onClick()
         }
     }
+
+    
   return (
     <>
     <section className={

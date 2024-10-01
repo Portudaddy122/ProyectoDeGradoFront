@@ -1,0 +1,78 @@
+/* Estilo para el fondo oscuro detrás del modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+}
+
+/* Contenedor principal del modal */
+.modal-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px; /* Ancho del modal */
+    max-width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1001; /* Un poco más alto para asegurarse de que esté encima del overlay */
+    position: relative;
+    text-align: center; /* Para centrar el contenido */
+}
+
+/* Título del modal */
+.modal-container h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+/* Contenido del modal */
+.modal-content {
+    margin: 20px 0;
+}
+
+/* Sección de acciones del modal */
+.modal-actions {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+/* Botones dentro del modal */
+.modal-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Botón de cancelar */
+.modal-actions button:hover {
+    opacity: 0.8;
+}
+
+/* Botón específico de 'Cancelar' */
+.modal-actions button:nth-child(2) {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+/* Botón de guardar o confirmar */
+.modal-actions button:first-child {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+}
+
+/* Botón de confirmar */
+.modal-actions button:last-child {
+    background-color: #f44336; /* Rojo */
+    color: white;
+}

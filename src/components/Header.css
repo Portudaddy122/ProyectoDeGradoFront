@@ -1,11 +1,12 @@
 .header-container{
+    top: 0px;
     /* border: 1px solid red; */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    width: 75%;
-    margin-left: 23%;
+    gap: 1px;
+    width: 100%;
+    margin-left: 1%;
     /* padding-inline-start: 150px; */
 
     
@@ -13,21 +14,20 @@
 .header-titles{
     /* border:1px solid  green; */
     padding-inline-start: 150px;
-    padding-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
     color: #4F4F4F;
     position: relative;
-    left: 5%;
-    margin-right: 10%;
+    left: 15%;
+    top: 0%;
 }
 .header-titles h1{
-    font-size: 30px;
-    font-weight: 500;
+    font-size: 25px;
+    font-weight: 800;
 }
 .header-titles h2{
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 300;
 }
 

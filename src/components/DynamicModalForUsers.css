@@ -26,6 +26,7 @@ option{
     max-width: 80%;
     font-family: "Kumbh Sans", sans-serif;
     text-align: center;
+   
     
   }
   
@@ -93,3 +94,20 @@ option{
     flex-direction: column;
     gap: 5px;
   }
+  .modal-label{
+
+   display: block;
+
+
+  }
+
+.modal-input{
+  
+  display: block;
+  margin-left: 100px;
+  
+  
+
+  
+  
+}

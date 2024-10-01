@@ -1,39 +1,38 @@
 .Dynamic-Card-Container{
-    width: 400px;
+    width: 300px;
     height: 180px;
     border: 5px solid black;
     display:inline-block;
     border-radius: 8px;
     margin-left: 15px;
-    margin-top: 120px;
+    margin-top: 0px;
     position: relative;
-    left: 400px;
-    
-    
-}
-
-h3{
-    justify-content: start;
-    padding-top: 15px;
-    position: absolute;
-    padding-left: 50px;
-    display: inline-flex;
+    left: 30px;
     
     
 }
 .Numeber-User-container{
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     margin-left: 20%;
-    margin-top:15px;
-    font-size: 40px;
+    font-size: 30px;
     padding-right: 20px;
     
 }
+.nombreTitulo{
+    justify-content: start;
+    padding-top: 1px;
+    position: absolute;
+    padding-left: 30px;
+    display: inline-flex;
+    
+    
+}
+
 .Icon-container{
     position:absolute;
     display: inline-flex;
-    padding-left: 270px;
+    padding-left: 190px;
     padding-top: 20px;
     width: 92px;
     height: 83px;   
@@ -41,8 +40,8 @@ h3{
    
 }
 .btnView-container{
-    padding-top: 15%;
+    padding-top: 18%;
     width: 90px;
-    padding-left: 150px;
+    padding-left: 100px;
 
 }

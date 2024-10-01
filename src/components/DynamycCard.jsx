@@ -14,7 +14,8 @@ const DynamycCard = ({ NumberUsers, icon, nameTitle }) => {
           <h2>{NumberUsers}</h2>
           
         </section>
-        <h3>{nameTitle}</h3>
+
+        <h3 className="nombreTitulo">{nameTitle}</h3>
         <section className='btnView-container'>
         <BtnActionsText color={'green'} text={'Ver'}/>
 

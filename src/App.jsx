@@ -10,163 +10,43 @@ import UserTable from './components/UserTable'
 import SearchBar from './components/SearchBar'
 import DynamicModelForUsers from './components/DynamicModelForUsers'
 import ExportActions from './components/ExportActions'
-import UserManagementPage from './pages/UserManagementPage'
+import UserManagementPage from './pages/UserManagementPage.jsx'
 import BtnLogout from './components/BtnLogout'
 
 import './App.css'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import UserForm from './components/UserForm'
 import ProfileComponent from './components/ProfileComponent'
 import ReportCard from './components/ReportCard'
 import Login from './components/Login.jsx'
 import UserManagementHome from './pages/UserManagementHome.jsx'
 import DynamycCard from './components/DynamycCard.jsx'
+import Modales from './components/Modales.jsx'
+import UserManagementForm from './pages/UserManagementForm.jsx'
 
 
 
-function App() {
-  const [searchQuery, setSearchQuery] = useState('')
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value)
-  }
-  const handleSearch = () => {
-    console.log('Searching for: ', searchQuery)
-  }
- 
-  const [modalConfig, setModalConfig] = useState({
-    isOpen: false,
-    title: '',
-    content: null,
-    onClose: null,
-    onSave: null,
-    onCancel: null,
-    onConfirm: null,
-    isEdit: false
-  })
-  const handleView = () => {
-    setModalConfig({
-      isOpen: true,
-      title: 'Visualizar acta',
-      content: (
-        <div>
-         <p> Puedes editar los campos del acta seleccionada.</p>
-          <section className='modal-edit-content-top'>
-
-            <label>Motivo</label>
-            <select>
-              <option>Academico</option>
-              <option>Disciplinario</option>
-            </select>
-            <label>Fecha</label>
-            <input type="date" />
-          </section>
-          <section className='modal-edit-contentn-materia'>
-            <label>Materia</label>
-            <select>
-              <option>Fisica</option>
-              <option>Matematicas</option>
-            </select>
-          </section>
-          <section className='modal-edit-content-bottom'>
-            <label>Descripcion</label>
-            <textarea>Se acordó durante la reunion que el estudiante se comprometió a mejorar las calificaciones para la tercera evaluacion semestral</textarea>
-          </section>
-        </div>
-      ),
-      onClose: () => setModalConfig(prev => ({ ...prev, isOpen: false })),
-      onSave: null,
-      onCancel: null,
-      onConfirm: null,
-      isEdit: false
-    });
-  };
-
-  const handleEdit = () => {
-    setModalConfig({
-      isOpen: true,
-      title: 'EDITAR UN ACTA',
-      content: (
-        <div>
-          <p> Puedes editar los campos del acta seleccionada.</p>
-          <section className='modal-edit-content-top'>
-
-            <label>Motivo</label>
-            <select>
-              <option>Academico</option>
-              <option>Disciplinario</option>
-            </select>
-            <label>Fecha</label>
-            <input type="date" />
-          </section>
-          <section className='modal-edit-contentn-materia'>
-            <label>Materia</label>
-            <select>
-              <option>Fisica</option>
-              <option>Matematicas</option>
-            </select>
-          </section>
-          <section className='modal-edit-content-bottom'>
-            <label>Descripcion</label>
-            <textarea>Se acordó durante la reunion que el estudiante se comprometió a mejorar las calificaciones para la tercera evaluacion semestral</textarea>
-          </section>
-        </div>
-      ),
-      onClose: null,
-      onSave: () => console.log('Save clicked!'),
-      onCancel: () => setModalConfig(prev => ({ ...prev, isOpen: false })),
-      onConfirm: null,
-      isEdit: true
-    });
-  };
-  const handleDelete = () => {
-    setModalConfig({
-      isOpen: true,
-      title: 'ELIMINAR UN ACTA',
-      content: (
-        <div>
-          <p>¿Estás seguro que deseas eliminar esta acta?</p>
-        </div>
-      ),
-      onClose: null,
-      onSave: () => console.log('Save clicked!'),
-      onSave: null,
-      onCancel: () => setModalConfig(prev => ({ ...prev, isOpen: false })),
-      onConfirm: () => console.log('Confirm clicked'),
-      isEdit: false
-    });
-  }
+const App = () => {
   return (
     <>
-      {/* <ListBtnIcons/>
-     <BtnActions/>
-     <BtnActionsText/> */}
-      {/* <Menu/> */}
-      {/* <UserTable users={users} /> */}
-      {/* <SearchBar 
-      value={searchQuery}
-      onChange={handleSearchChange}
-      onSearch={handleSearch}/> */}
-      {/* <BtnActionsText color="green" text="Ver" onClick={handleView}/>
-      <BtnActionsText color="yellow" text="Editar" onClick={handleEdit}/>
-      <BtnActionsText color="red" text="Eliminar" onClick={handleDelete}/>
-      <DynamicModelForUsers {...modalConfig} />
-        <ExportActions/>
-        <SearchBar/> */}
-
-  {/*<section className='school-managment-container'>
-        <Menu/>
-       
-        {/* <BtnActionsText color="red" text ="Eliminar" onClick={handleDelete}/>
-        <DynamicModelForUsers {...modalConfig}/> */}
-    {/* </section>         */}
-    {/* <UserForm/>
-    <ProfileComponent/>
-    <ReportCard/> */}
-    
-     {/* <Login/> */}
-     {/* <ColumnGroupingTable/> */}
-     <UserManagementHome/>
+     {/* <UserManagementHome/> */}
       {/* <UserManagementPage/> */}
-     {/* <DynamycCard/> */}
+      <DynamicModelForUsers/>
+
+      <Router>
+            <Menu/>
+            <div style={{ marginLeft: '250px', padding: '20px' }}> {/* Espacio para el contenido */}
+                <Routes>
+                    <Route path="/" element={<UserManagementHome />} />
+                    <Route path="/listar" element={<UserManagementPage />} />
+                    <Route path="/agregar" element={<UserManagementForm />} />
+                    <Route path="/editar" element={<UserManagementPage />} />
+                    <Route path="/Modales" element={<Modales />} />
+                    
+                </Routes>
+            </div>
+        </Router>
+    
      
     </>
   )

@@ -5,6 +5,7 @@
     border: 2px solid black;
     padding: 20px;
     border-radius: 10px;
+    margin-left: 10%;
   }
   
   .text-input-container,
@@ -25,3 +26,7 @@
     font-weight: bold;
   }
   
+  button{
+    background-color: #006414;
+
+  }

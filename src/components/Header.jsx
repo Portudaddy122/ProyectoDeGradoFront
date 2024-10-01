@@ -10,6 +10,7 @@ const Header = ({title,subtitle}) => {
       <div className='header-titles'>
         <h1>{title}</h1>
         <h2>{subtitle}</h2>
+        
       </div>
         <BtnLogout/>
 
