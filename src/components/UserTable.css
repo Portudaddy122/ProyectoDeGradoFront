@@ -6,9 +6,9 @@ body {
     border-radius: 9px;
     overflow: hidden;
     border: 1.5px solid black;
-    width: 95%;
+    width: 97%;
     left: 0%;
-    margin-left: 90px;
+    margin-left: 70px;
 }
 
 .user-table {
@@ -63,3 +63,41 @@ button {
     display: flex;
     justify-content: space-around;
 }
+
+.search-and-export {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  background-color: #f2f2f2;
+}
+
+.export-actions-container {
+  display: flex;
+  gap: 10px;
+}
+
+.export-actions-container img {
+  cursor: pointer;
+  width: 30px; /* Ajusta el tamaño del ícono si es necesario */
+}
+.search-and-export {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    background-color: #f2f2f2;
+  }
+  
+  .export-actions-container {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .export-actions-container img {
+    cursor: pointer;
+    width: 30px; /* Ajusta el tamaño del ícono si es necesario */
+  }
+  

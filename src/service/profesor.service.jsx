@@ -1,10 +1,26 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const base_URL = 'http://localhost:4000/'
+const base_URL = 'http://localhost:4000/';
+
+export const getProfesor = () => {
+    return axios.get(`${base_URL}obtener/profesores`);
+};
+
+export const getProfesorById = (idprofesor) => {
+    return axios.get(`${base_URL}profesor/${idprofesor}`); // Asegúrate de pasar el id
+};
 
 export const postProfesor = (formData) => {
     return axios.post(`${base_URL}crear/profesor`, formData);
-}
+};
+
+export const putProfesor = (idprofesor, formData) => {
+    return axios.put(`${base_URL}actualizar/profesor/${idprofesor}`, formData); // Asegúrate de pasar el id
+};
+
+export const deleteProfesor = (idprofesor) => {
+    return axios.delete(`${base_URL}eliminar/profesor/${idprofesor}`); // Asegúrate de pasar el id
+};
 
 export const getCountTeachers = async () => {
     try {

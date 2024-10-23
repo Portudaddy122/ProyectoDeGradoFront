@@ -1,4 +1,4 @@
-.btn-actions-text-container{
+.btn-actions-text-container {
     height: 25px;
     border-radius: 8px;
     display: flex;
@@ -7,22 +7,50 @@
     font-family: "Kumbh Sans", sans-serif;
     color: white;
     padding: 0 20px;
+    transition: background-color 0.3s ease; /* Añadir transición para suavizar el cambio de color */
 }
-.red{
+
+.red {
     background-color: #992500;
+    cursor: pointer;
 }
-.green{
+
+.green {
     background-color: #006414;
+    cursor: pointer;
 }
-.yellow{
+
+.yellow {
     background-color: #BFB91A;
+    cursor: pointer;
 }
-.btn-actions-text-container.red.clicked{
+
+.btn-actions-text-container.red:hover {
+    background-color: #cc3300; /* Cambia a un tono más claro de rojo */
+    cursor: pointer;
+}
+
+.btn-actions-text-container.green:hover {
+    background-color: #009929; /* Cambia a un tono más claro de verde */
+    cursor: pointer;
+}
+
+.btn-actions-text-container.yellow:hover {
+    background-color: #f4ec09; /* Cambia a un tono más claro de amarillo */
+    cursor: pointer;
+}
+
+.btn-actions-text-container.red.clicked {
     background-color: #cc3300;
+    cursor: pointer;
 }
-.btn-actions-text-container.green.clicked{
+
+.btn-actions-text-container.green.clicked {
     background-color: #009929;
+    cursor: pointer;
 }
-.btn-actions-text-container.yellow.clicked{
+
+.btn-actions-text-container.yellow.clicked {
     background-color: #f4ec09;
+    cursor: pointer;
 }

@@ -1,31 +1,39 @@
-.btn-actions-container{
-    height: 33px ;
+.btn-actions-container {
+    height: 33px;
     width: 67px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 8px;
+    transition: background-color 0.3s ease; /* Añadir transición para suavizar el cambio de color */
 }
-.red{
+
+.red {
     background-color: #992500;
 }
-.green{
+
+.green {
     background-color: #006414;
 }
-.icon{
-    height: 23px ;
+
+.icon {
+    height: 23px;
     width: 23px;
 }
-.delete{
- background-image: url('../../assets/icons/delete.svg');
+
+.delete {
+    background-image: url('../../assets/icons/delete.svg');
 }
-.check{
+
+.check {
     background-image: url('../../assets/icons/check.svg');
     background-repeat: no-repeat;
 }
-.btn-actions-container.red.clicked{
+
+.btn-actions-container.red.clicked {
     background-color: #cc3300;
 }
-.btn-actions-container.green.clicked{
+
+.btn-actions-container.green.clicked {
     background-color: #009929;
 }

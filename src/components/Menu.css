@@ -84,3 +84,17 @@ height: 20px;
  
  
 }
+/* Dropdown menu */
+.dropdown {
+    list-style: none;
+    padding-left: 0px; /* Añadir margen a la izquierda */
+  }
+  
+  .dropdown li {
+    padding: 5px 0;
+  }
+  
+  .Icon-container-menu.rotate {
+    transform: rotate(180deg); /* Rotar el icono al abrir */
+  }
+  

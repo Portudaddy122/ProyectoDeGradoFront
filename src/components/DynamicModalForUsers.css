@@ -1,113 +1,117 @@
-h2{
-  font-weight: 500;
-  padding-bottom: 20px;
-}
-option{
-  font-family: "Kumbh Sans", sans-serif;
-}
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  }
-  
-  .modal-content {
-    background: #D2CEAA;
-    padding: 20px;
-    border-radius: 10px;
-    width: 400px;
-    max-width: 80%;
-    font-family: "Kumbh Sans", sans-serif;
-    text-align: center;
-   
-    
-  }
-  
-  .modal-actions {
-    margin-top: 20px;
-    padding-inline-start: 44%;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-family: "Kumbh Sans", sans-serif;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .save-btn {
-    background-color: green;
-    color: white;
-  }
-  
-  .cancel-btn {
-    background-color: red;
-    color: white;
-  }
-  
-  .close-btn {
-    background-color: green;
-    color: white;
-  }
-  
-  .confirm-btn{
-    background-color: green;
-    color: white;
-    
-  }
-  .modal-edit-content-top{
-    display: flex;
-    justify-content: space-around;
-    font-weight: 600;
-    padding: 14px 0;
-    
-  }
-  .modal-edit-contentn-materia{
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    align-items: center;
-  }
-  .modal-edit-contentn-materia label{
-    font-weight: 600;
-    font-size: 16px;
-  }
-  select{
-    border: 1x solid violet;
-  }
-  .modal-edit-content-bottom{
-    font-weight: 600;
-    height: 80px;
-    padding-top: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  .modal-label{
+}
 
-   display: block;
+.modal-content {
+  background-color: #f5f5dc; /* Beige background */
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  width: 400px;
+  max-width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+label {
+  width: 40%;
+  margin-bottom: 5px;
+  color: #333;
+  display: inline-flex;
+  padding-top: 10px;
+}
+
+input {
+   /* Two inputs per row */
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+.modal-title {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #333;
+  padding-left: 71px;
+}
+
+.modal-description {
+  margin-bottom: 20px;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.save-btn, .cancel-btn, .close-btn, .confirm-btn {
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-btn {
+  background-color: #28a745; /* Green for save */
+}
+
+.cancel-btn {
+  background-color: #b22222; /* Red for cancel */
+}
+
+.close-btn {
+  background-color: #003400; /* Gray for close */
+}
+
+.confirm-btn {
+  background-color: #28a745; /* Green for confirm */
+}
+
+button:hover {
+  opacity: 0.9;
+}
 
 
-  }
+/* Estilo para el botón "Ver" */
+.btn-view {
+  background-color: #006414; /* Color por defecto */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
-.modal-input{
-  
-  display: block;
-  margin-left: 100px;
-  
-  
+.btn-view:hover {
+  background-color: #009929; /* Color cuando el cursor está sobre el botón */
+}
 
-  
-  
+/* Estilo para el botón "Eliminar" */
+.btn-delete {
+  background-color: #992500; /* Color por defecto */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  background-color: #cc3300; /* Color cuando el cursor está sobre el botón */
 }

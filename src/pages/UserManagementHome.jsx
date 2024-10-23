@@ -6,8 +6,8 @@ import DynamycCard from "../components/DynamycCard";
 import Header from "../components/Header";
 import UsersIcon from '../assets/icons/Users.svg';
 import UsersBIcon from '../assets/icons/UsersB.svg';
-import { getCountTeachers } from "../service/profesor.service.jsx";
-import { getCountUsers } from "../service/users.service.jsx";
+
+
 
 
 function UserManagementHome() {
