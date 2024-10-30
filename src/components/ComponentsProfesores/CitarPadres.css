@@ -1,0 +1,81 @@
+.citar-form-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-group-inline {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .form-input,
+  .form-select,
+  .form-textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .form-input[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+  }
+  
+  .form-select {
+    background-color: #fff;
+  }
+  
+  .form-textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  .form-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .limpiar {
+    background-color: #b33a3a;
+    color: #fff;
+  }
+  
+  .enviar {
+    background-color: #4caf50;
+    color: #fff;
+  }
+  
+  .form-button:hover {
+    opacity: 0.9;
+  }
+  

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './Menu.css';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/icons/logo.svg';
@@ -12,25 +12,20 @@ const Menu = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [DropdownInfo, setDropdownInfo] = useState(false);
   const [DropdownActas, setDropdownActas] = useState(false);
-
-
-
-
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirigir a "no autorizado" si el usuario no tiene ninguno de los roles permitidos
+    if (user && user.role !== 'Administrador' && user.role !== 'Profesor' && user.role !== 'Psicologo') {
+      navigate('/unauthorized');
+    }
+  }, [user, navigate]);
 
   const handleLogout = () => {
     logout();
     navigate('/login'); // Redirigir al login después del logout
   };
-
-
-  // Verificar si el usuario no es administrador
-  if (user?.role !== 'Administrador') {
-    // Si no es administrador, redirige a la página no autorizada
-    navigate('/unauthorized');
-    return null; // No renderizamos el menú si no es administrador
-  }
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -44,6 +39,10 @@ const Menu = () => {
     setDropdownActas(!DropdownActas);
   };
 
+  // Verificación de roles
+  const isProfesorOrPsicologo = user?.role === 'Profesor' || user?.role === 'Psicologo';
+  const isAdministrador = user?.role === 'Administrador';
+
   return (
     <>
       <div className="sidebar">
@@ -56,29 +55,35 @@ const Menu = () => {
             <hr />
           </div>
 
-          <li>
-            <div className='sidebar-container'>
-              <Link to="/" className="sidebar-link">
-                Inicio
-                <i className='Icon-container-menu'>
-                  <img src={iconHome} alt='Home' />
-                </i>
-              </Link>
-            </div>
-          </li>
-
-          <li>
-            <div className='sidebar-container'>
-              <div className="sidebar-link" onClick={toggleDropdown}>
-                Gestión de Usuarios
-                <i className={`Icon-container-menu ${isDropdownOpen ? 'rotate' : ''}`}>
-                  <img src={rowIcon} alt='Dropdown' />
-                </i>
+          {/* Esta opción solo se muestra si el rol es Administrador */}
+          {isAdministrador && (
+            <li>
+              <div className='sidebar-container'>
+                <Link to="/" className="sidebar-link">
+                  Inicio
+                  <i className='Icon-container-menu'>
+                    <img src={iconHome} alt='Home' />
+                  </i>
+                </Link>
               </div>
-            </div>
-          </li>
+            </li>
+          )}
 
-          {isDropdownOpen && (
+          {/* Gestión de Usuarios solo para Administrador */}
+          {isAdministrador && (
+            <li>
+              <div className='sidebar-container'>
+                <div className="sidebar-link" onClick={toggleDropdown}>
+                  Gestión de Usuarios
+                  <i className={`Icon-container-menu ${isDropdownOpen ? 'rotate' : ''}`}>
+                    <img src={rowIcon} alt='Dropdown' />
+                  </i>
+                </div>
+              </div>
+            </li>
+          )}
+
+          {isDropdownOpen && isAdministrador && (
             <ul className="dropdown">
               <li className='sidebar-container'>
                 <Link to="/listar" className="sidebar-link">
@@ -118,18 +123,21 @@ const Menu = () => {
             </ul>
           )}
 
-          <li>
-            <div className='sidebar-container'>
-              <div className="sidebar-link" onClick={toggleDropdownInfo}>
-                Gestión de Informes
-                <i className={`Icon-container-menu ${DropdownInfo ? 'rotate' : ''}`}>
-                  <img src={rowIcon} alt='Dropdown' />
-                </i>
+          {/* Gestión de Informes solo para Administrador */}
+          {isAdministrador && (
+            <li>
+              <div className='sidebar-container'>
+                <div className="sidebar-link" onClick={toggleDropdownInfo}>
+                  Gestión de Informes
+                  <i className={`Icon-container-menu ${DropdownInfo ? 'rotate' : ''}`}>
+                    <img src={rowIcon} alt='Dropdown' />
+                  </i>
+                </div>
               </div>
-            </div>
-          </li>
+            </li>
+          )}
 
-          {DropdownInfo && (
+          {DropdownInfo && isAdministrador && (
             <ul className="dropdown">
               <li className='sidebar-container'>
                 <Link to="/categorias" className="sidebar-link">
@@ -142,27 +150,74 @@ const Menu = () => {
             </ul>
           )}
 
-          <li>
-            <div className='sidebar-container'>
-              <div className="sidebar-link" onClick={toggleDropdownActas}>
-                Gestión de Actas
-                <i className={`Icon-container-menu ${DropdownActas ? 'rotate' : ''}`}>
-                  <img src={rowIcon} alt='Dropdown' />
-                </i>
-              </div>
-            </div>
-          </li>
 
-          {DropdownActas && (
-            <ul className="dropdown">
-              <li className='sidebar-container'>
-                <Link to="/" className="sidebar-link">
-                  Listar Actas
-                  <i className="Icon-container-menu">
-                    <img src={iconInfo} alt='Listar Actas' />
+          {isProfesorOrPsicologo && (
+            <li>
+              <div className='sidebar-container'>
+                <Link to="/psicologoHome" className="sidebar-link">
+                  Inicio
+                  <i className='Icon-container-menu'>
+                    <img src={iconHome} alt='Home' />
                   </i>
                 </Link>
+              </div>
+            </li>
+          )}
+          {isProfesorOrPsicologo && (
+            <li>
+              <div className='sidebar-container'>
+                <Link to="/psicologoEntrevistas" className="sidebar-link">
+                  Entrevistas
+                  <i className='Icon-container-menu'>
+                    <img src={iconHome} alt='Home' />
+                  </i>
+                </Link>
+              </div>
+            </li>
+          )}
+
+
+
+          {/* Gestión de Actas solo para Profesor o Psicologo */}
+          {isProfesorOrPsicologo && (
+            <li>
+              <div className='sidebar-container'>
+                <div className="sidebar-link" onClick={toggleDropdownActas}>
+                  Gestión de Actas
+                  <i className={`Icon-container-menu ${DropdownActas ? 'rotate' : ''}`}>
+                    <img src={rowIcon} alt='Dropdown' />
+                  </i>
+                </div>
+              </div>
+            </li>
+          )}
+
+
+
+          {DropdownActas && isProfesorOrPsicologo && (
+            <ul className="dropdown">
+              <li className='sidebar-container'>
+                <Link to="/citar-apoderados" className="sidebar-link">
+                  Crear Acta
+                </Link>
               </li>
+             
+              <li className='sidebar-container'>
+                <Link to="/editar-acta" className="sidebar-link">
+                  Editar una acta
+                </Link>
+              </li>
+              <li className='sidebar-container'>
+                <Link to="/eliminar-acta" className="sidebar-link">
+                  Eliminar acta
+                </Link>
+              </li>
+              <li className='sidebar-container'>
+                <Link to="/psicologoListPadres" className="sidebar-link">
+                  Citar a Padres
+                </Link>
+              </li>
+              
             </ul>
           )}
         </ul>

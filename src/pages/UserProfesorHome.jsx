@@ -1,12 +1,17 @@
 import React from 'react';
-import UserMenu from '../components/UsersMenu.jsx';
+import Menu from '../components/Menu.jsx';
+import MenuProfesores from '../components/MenuProfesores.jsx';
+import FormActas from '../components/FormActas.jsx';
+import Header from '../components/Header.jsx';
+
 
 const UserProfesorHome = () => {
     return (
         <div>
-            <UserMenu />
-            <h1>Profesor Dashboard</h1>
-            <p>Bienvenido al dashboard del profesor.</p>
+            <Menu/>
+            <Header title={"Gestion de Actas"} subtitle={"Bienvenido al sistema escolar IDEB"}/>
+            
+            
         </div>
     );
 };

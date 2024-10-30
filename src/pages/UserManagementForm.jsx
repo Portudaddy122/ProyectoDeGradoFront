@@ -1,4 +1,3 @@
-// userManagementForm.jsx
 import React, { useState, useEffect } from 'react';
 import UserForm from '../components/UserForm.jsx';
 import { postAdministrador } from '../service/administrador.service.jsx';
@@ -9,8 +8,9 @@ import { postPsicologo } from '../service/psicologo.service.jsx';
 import { getDirecciones } from '../service/direccion.service.jsx';
 import { getDatePadres } from '../service/PadreDeFamilia.jsx';
 import Toast from '../components/Toast.jsx';
-import {getCursos} from '../service/cursos.service.jsx'
-import Header from '../components/Header.jsx'
+import { getCursos } from '../service/cursos.service.jsx';
+import { getHorarios } from '../service/horario.service.jsx';  // Importar servicio de horarios
+import Header from '../components/Header.jsx';
 
 const UserManagementForm = () => {
   const [formData, setFormData] = useState({
@@ -26,11 +26,13 @@ const UserManagementForm = () => {
     contrasenia: '',
     estado: true,
     rol: '',
+    idhorario: ''  // Añadir el campo idhorario al estado
   });
 
   const [direcciones, setDirecciones] = useState([]);
   const [cursos, setCursos] = useState([]);
   const [padres, setPadres] = useState([]);
+  const [horarios, setHorarios] = useState([]); // Estado para almacenar horarios
   const [toast, setToast] = useState({ show: false, message: '', type: '' });
 
   useEffect(() => {
@@ -68,6 +70,22 @@ const UserManagementForm = () => {
     };
     fetchCursos();
   }, []);
+
+  useEffect(() => {
+    const fetchHorarios = async () => {
+      try {
+        const response = await getHorarios();  // Llama al servicio de horarios
+        setHorarios(response.data);
+      } catch (error) {
+        console.error('Error al obtener los horarios:', error);
+      }
+    };
+
+    // Solo obtiene horarios si el rol es Profesor o Psicologo
+    if (formData.rol === 'Profesor' || formData.rol === 'Psicologo') {
+      fetchHorarios();
+    }
+  }, [formData.rol]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -108,23 +126,29 @@ const UserManagementForm = () => {
       }
 
       setToast({ show: true, message: `Usuario ${formData.rol} creado exitosamente`, type: 'success' });
-      setFormData({
-        idDireccion: '',
-        idPadre: '',
-        idCurso: '',
-        nombres: '',
-        apellidoPaterno: '',
-        apellidoMaterno: '',
-        email: '',
-        numCelular: '',
-        fechaDeNacimiento: '',
-        contrasenia: '',
-        estado: true,
-        rol: '',
-      });
+      handleReset(); // Llama a handleReset para limpiar el formulario después de enviar
     } catch (error) {
       setToast({ show: true, message: error.response?.data?.error || 'Error al crear usuario', type: 'error' });
     }
+  };
+
+  // Función para limpiar el formulario
+  const handleReset = () => {
+    setFormData({
+      idDireccion: '',
+      idPadre: '',
+      idCurso: '',
+      nombres: '',
+      apellidoPaterno: '',
+      apellidoMaterno: '',
+      email: '',
+      numCelular: '',
+      fechaDeNacimiento: '',
+      contrasenia: '',
+      estado: true,
+      rol: '',
+      idhorario: ''
+    });
   };
 
   const hideToast = () => {
@@ -132,37 +156,42 @@ const UserManagementForm = () => {
   };
 
   return (
-    <div className="user-form-container">
-      
-      {toast.show && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
-      <Header title={"Gestion de Usuarios"} subtitle={"Ingresa los datos del usuario para registrarlo"}/>
+    <>
+      <Header title="Gestion de Usuarios" subtitle="Ingresa los datos del usuario para registrarlo" />
       <hr />
-      <div className="form-group">
-        <label>Rol:</label>
-        <select name="rol" value={formData.rol} onChange={handleChange} required>
-          <option value="">Selecciona un rol</option>
-          <option value="Administrador">Administrador</option>
-          <option value="Profesor">Profesor</option>
-          <option value="Psicologo">Psicólogo</option>
-          <option value="Estudiante">Estudiante</option>
-          <option value="Padre de Familia">Padre de Familia</option>
-        </select>
-      </div>
+      <div className="user-form-container">
+        {toast.show && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
 
-      <UserForm
-        formData={formData}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        direcciones={direcciones}
-        cursos={cursos}
-        padres={padres}
-        showPadre={formData.rol === 'Estudiante'}
-        showCurso={formData.rol === 'Estudiante'}
-        showEmail={formData.rol !== 'Estudiante'}
-        showNumCelular={formData.rol !== 'Estudiante'}
-        showContrasenia={formData.rol !== 'Estudiante'}
-      />
-    </div>
+        <div className="form-group">
+          <label>Rol:</label>
+          <select name="rol" value={formData.rol} onChange={handleChange} required>
+            <option value="">Selecciona un rol</option>
+            <option value="Administrador">Administrador</option>
+            <option value="Profesor">Profesor</option>
+            <option value="Psicologo">Psicologo</option>
+            <option value="Estudiante">Estudiante</option>
+            <option value="Padre de Familia">Padre de Familia</option>
+          </select>
+        </div>
+
+        <UserForm
+          formData={formData}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          handleReset={handleReset}  // Pasar la función handleReset como prop a UserForm
+          direcciones={direcciones}
+          cursos={cursos}
+          padres={padres}
+          horarios={horarios}
+          showPadre={formData.rol === 'Estudiante'}
+          showCurso={formData.rol === 'Estudiante'}
+          showEmail={formData.rol !== 'Estudiante'}
+          showNumCelular={formData.rol !== 'Estudiante'}
+          showContrasenia={formData.rol !== 'Estudiante'}
+          showHorario={formData.rol === 'Profesor' || formData.rol === 'Psicologo'}
+        />
+      </div>
+    </>
   );
 };
 

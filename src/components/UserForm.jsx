@@ -1,8 +1,22 @@
-// UserForm.jsx
 import React from 'react';
 import './UserForm.css'; 
 
-const UserForm = ({ formData, handleChange, handleSubmit, direcciones, showCurso, cursos, padres, showPadre, showEmail, showNumCelular, showContrasenia }) => {
+const UserForm = ({
+  formData,
+  handleChange,
+  handleSubmit,
+  handleReset,
+  direcciones,
+  showCurso,
+  cursos,
+  padres,
+  showPadre,
+  showEmail,
+  showNumCelular,
+  showContrasenia,
+  showHorario,
+  horarios
+}) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-group">
@@ -96,21 +110,20 @@ const UserForm = ({ formData, handleChange, handleSubmit, direcciones, showCurso
       {/* Mostrar campo de Curso solo si es Estudiante */}
       {showCurso && (
         <div className="form-group">
-          <label>ID Curso:</label>
+          <label>Curso:</label>
           <select
             name="idCurso"
             value={formData.idCurso}
             onChange={handleChange}
             required
           >
-           <option value="">Selecciona un curso</option>
+            <option value="">Selecciona un curso</option>
             {cursos.map((curso) => (
               <option key={curso.idcurso} value={curso.idcurso}>
                 {curso.nombrecurso} {curso.paralelo} de {curso.nivel}
               </option>
             ))}
-            </select>
-
+          </select>
         </div>
       )}
 
@@ -157,7 +170,33 @@ const UserForm = ({ formData, handleChange, handleSubmit, direcciones, showCurso
         </div>
       )}
 
-      <button type="submit">Crear Usuario</button>
+      {/* Mostrar campo de horario solo si es Profesor o Psicologo */}
+      {showHorario && (
+        <div className="form-group">
+          <label>Horario:</label>
+          <select
+            name="idhorario"
+            value={formData.idhorario}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Selecciona un horario</option>
+            {horarios.map((horario) => (
+              <option key={horario.idhorario} value={horario.idhorario}>
+                {horario.horainicio} - {horario.horafin}
+              </option>
+            ))}
+          </select>
+          
+        </div>
+      )}
+
+<div className="form-buttons">
+  <button type="submit" className="submit-button">Crear Usuario</button>
+  <button type="button" onClick={handleReset} className="reset-button">Limpiar</button>
+</div>
+
+     
     </form>
   );
 };

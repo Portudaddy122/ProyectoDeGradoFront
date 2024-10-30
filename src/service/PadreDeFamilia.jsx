@@ -6,8 +6,8 @@ export const getPadre = () => {
     return axios.get(`${base_URL}obtener/padresdefamilia`);
 };
 
-export const getPadreById = (idpadre) => {
-    return axios.get(`${base_URL}obtener/padredefamilia/${idpadre}`); // Asegúrate de pasar el id
+export const getPadreById = (idPadre) => {
+    return axios.get(`${base_URL}obtener/padredefamilia/${idPadre}`); // Asegúrate de pasar el id
 };
 
 export const postPadre = (formData) => {

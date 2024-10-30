@@ -12,7 +12,7 @@ import BtnActionsText from "./botones/BtnActionsText";
 import "./UserTable.css";
 import ExportActions from "./ExportActions";
 
-const UserTable = ({ users, onView, onEdit, onDelete }) => {
+const UserTable = ({ users, onView, onEdit, onDelete, onCite, hideDefaultActions }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [filter, setFilter] = useState("");
@@ -29,6 +29,7 @@ const UserTable = ({ users, onView, onEdit, onDelete }) => {
   const handleFilterChange = (event) => {
     setFilter(event.target.value.toLowerCase());
   };
+  
 
   const filteredUsers = users.filter((user) =>
     user.nombres.toLowerCase().includes(filter) ||
@@ -38,19 +39,18 @@ const UserTable = ({ users, onView, onEdit, onDelete }) => {
   );
 
   return (
-    <Paper sx={{ width: "99%", overflow: "hidden", border: "2px solid black", marginLeft: "5%", height: 'auto',  fontFamily: "Kumbh Sans"}}>
+    <Paper sx={{ width: "99%", overflow: "hidden", border: "2px solid black", marginLeft: "5%", height: 'auto', fontFamily: "Kumbh Sans" }}>
       <div className="search-and-export">
-
-      <TextField
-        label="Buscar"
-        variant="outlined"
-        fullWidth
-        onChange={handleFilterChange}
-        placeholder="Buscar por nombre, apellido o rol"
-        style={{ margin: "10px", border: '2px solid black', borderRadius: "8px"}}
+        <TextField
+          label="Buscar"
+          variant="outlined"
+          fullWidth
+          onChange={handleFilterChange}
+          placeholder="Buscar por nombre, apellido o rol"
+          style={{ margin: "10px", border: '2px solid black', borderRadius: "8px" }}
         />
-      <ExportActions />
-        </div>
+        <ExportActions />
+      </div>
       <TableContainer>
         <Table>
           <TableHead>
@@ -66,10 +66,10 @@ const UserTable = ({ users, onView, onEdit, onDelete }) => {
             {filteredUsers
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((user, index) => (
-                <TableRow 
+                <TableRow
                   key={index}
-                  sx={{ 
-                    '&:hover': { 
+                  sx={{
+                    '&:hover': {
                       backgroundColor: '#f1f1f1',
                       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                       cursor: 'pointer'
@@ -82,25 +82,39 @@ const UserTable = ({ users, onView, onEdit, onDelete }) => {
                   <TableCell>{user.rol}</TableCell>
                   <TableCell>
                     <section className="btn-actions">
-                      {onView && (
-                        <BtnActionsText
-                          color="green"
-                          text="Ver"
-                          onClick={() => onView(user)}
-                        />
+                      {/* Botones predeterminados: Ver, Editar, Eliminar */}
+                      {!hideDefaultActions && (
+                        <>
+                          {onView && (
+                            <BtnActionsText
+                              color="green"
+                              text="Ver"
+                              onClick={() => onView(user)}
+                            />
+                          )}
+                          {onEdit && (
+                            <BtnActionsText
+                              color="yellow"
+                              text="Editar"
+                              onClick={() => onEdit(user)}
+                            />
+                          )}
+                          {onDelete && (
+                            <BtnActionsText
+                              color="red"
+                              text="Eliminar"
+                              onClick={() => onDelete(user)}
+                            />
+                          )}
+                        </>
                       )}
-                      {onEdit && (
+
+                      {/* Botón personalizado: Citar */}
+                      {onCite && (
                         <BtnActionsText
-                          color="yellow"
-                          text="Editar"
-                          onClick={() => onEdit(user)}
-                        />
-                      )}
-                      {onDelete && (
-                        <BtnActionsText
-                          color="red"
-                          text="Eliminar"
-                          onClick={() => onDelete(user)}
+                          color="blue"
+                          text="Citar"
+                          onClick={() => onCite(user)}
                         />
                       )}
                     </section>

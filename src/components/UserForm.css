@@ -1,4 +1,4 @@
-/* Estilos básicos para el formulario de usuario */
+/* Estilos básicos del formulario */
 .user-form-container {
   max-width: 950px;
   margin: 0 auto;
@@ -8,7 +8,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 3px solid black;
   margin-left: 50px;
-
+  position: relative;
 }
 
 .user-form-container h2 {
@@ -17,6 +17,7 @@
   color: #333;
   margin-bottom: 20px;
 }
+
 .user-form-container h3 {
   text-align: center;
   font-size: 15px;
@@ -24,15 +25,14 @@
   margin-bottom: 10px;
 }
 
-
 .user-form-container form {
   display: flex;
-  flex-wrap: wrap; /* Para permitir que los elementos se distribuyan en varias filas */
-  gap: 20px; /* Espacio entre los inputs */
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .form-group {
-  flex: 1 1 calc(50% - 20px); /* Los elementos ocupan el 50% del ancho menos el espacio entre ellos */
+  flex: 1 1 calc(50% - 20px);
   display: flex;
   flex-direction: column;
 }
@@ -58,21 +58,43 @@
   outline: none;
 }
 
-.user-form-container button {
+/* Estilos para los botones */
+.user-form-container .form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.user-form-container .form-buttons .submit-button {
   padding: 12px;
   font-size: 16px;
   color: #fff;
   background-color: #006414;
   border: none;
   border-radius: 4px;
-  margin-top: 20px;
   cursor: pointer;
 }
 
-.user-form-container button:hover {
+.user-form-container .form-buttons .submit-button:hover {
   background-color: #009929;
 }
 
+.user-form-container .form-buttons .reset-button {
+  padding: 12px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #d9534f;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.user-form-container .form-buttons .reset-button:hover {
+  background-color: #e57373;
+}
+
+/* Mensajes de error y éxito */
 .user-form-container .error-message {
   color: red;
   font-size: 12px;
@@ -85,14 +107,21 @@
   margin-top: 5px;
 }
 
-/* Ajustes para dispositivos pequeños */
+/* Responsive para dispositivos medianos (tablet) */
+@media (max-width: 1024px) {
+  .form-group {
+    flex: 1 1 calc(100% - 20px); /* Los elementos ocupan el 100% del ancho */
+  }
+}
+
+/* Ajustes para dispositivos pequeños (smartphones) */
 @media (max-width: 768px) {
   .user-form-container {
     padding: 15px;
   }
 
   .form-group {
-    flex: 1 1 100%; /* Cada elemento ocupará el 100% del ancho en pantallas pequeñas */
+    flex: 1 1 100%; /* Cada elemento ocupará el 100% del ancho */
   }
 
   .user-form-container input,
@@ -102,7 +131,27 @@
 
   .user-form-container button {
     font-size: 14px;
-    background-color: #009929;
-    cursor: pointer;
+  }
+}
+
+/* Ajustes adicionales para pantallas extra pequeñas */
+@media (max-width: 480px) {
+  .user-form-container h2 {
+    font-size: 20px;
+  }
+
+  .user-form-container h3 {
+    font-size: 13px;
+  }
+
+  .user-form-container .form-buttons {
+    flex-direction: column; /* Botones apilados en pantallas muy pequeñas */
+    align-items: stretch;
+  }
+
+  .user-form-container .form-buttons .submit-button,
+  .user-form-container .form-buttons .reset-button {
+    width: 100%;
+    margin-bottom: 10px; /* Espacio entre botones apilados */
   }
 }

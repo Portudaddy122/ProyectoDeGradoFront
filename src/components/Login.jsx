@@ -18,39 +18,24 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const handleSubmit = async (e) => {
-      e.preventDefault();
     
-      try {
-        const data = await loginService.login(email, password);
-        login(data.token, data.user);
-    
-        // Redirigir basado en el rol del usuario
-        if (data.user.role === 'Administrador') {
-          navigate('/admin');
-        } else if (data.user.role === 'Profesor') {
-          navigate('/profesor');  // Aquí redirigimos a la ruta correcta
-        } else if (data.user.role === 'Padre De Familia') {
-          navigate('/padre');
-        } else {
-          navigate('/unauthorized');
-        }
-      } catch (err) {
-        setError(err.message || 'Error al iniciar sesión');
-      }
-    };    
-
     try {
-      const data = await loginService.login(email, password);
-      login(data.token, data.user);
+      const data = await loginService.login(email, password);  // Autentica con el servicio
+      login(data.token, data.user);  // Guarda los datos en el contexto
 
+      // Redirigir basado en el rol del usuario
       if (data.user.role === 'Administrador') {
-        navigate('/');
+        navigate('/admin');
       } else if (data.user.role === 'Profesor') {
-        navigate('/profesor');
+        navigate('/profesor');  // Aquí redirigimos a la ruta correcta
+      } else if (data.user.role === 'Padre De Familia') {
+        navigate('/padre');
+      } else if (data.user.role === 'Psicologo') {
+        navigate('/psicologo');
       } else {
         navigate('/unauthorized');
       }
+      
     } catch (err) {
       setError(err.message || 'Error al iniciar sesión');
       setShowToast(true);  // Muestra el Toast al haber error
@@ -64,11 +49,7 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-box">
-        <img
-          src={logo}  // Placeholder del logo
-          alt="IDEB Logo"
-          className="login-logo"
-        />
+        <img src={logo} alt="IDEB Logo" className="login-logo" />
         <h2>BIENVENIDO</h2>
         <p>INICIA SESIÓN PARA INGRESAR</p>
         <form onSubmit={handleSubmit}>
@@ -81,22 +62,19 @@ function Login() {
           />
           <div className="password-container">
             <input
-              type={showPassword ? 'text' : 'password'}  // Cambia entre "text" y "password"
+              type={showPassword ? 'text' : 'password'}
               placeholder="Ingresa tu contraseña"
               className="login-input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <img
-              src={EyeIcon}  // Ícono del ojo
-              alt="Mostrar/Ocultar contraseña"
+              src={EyeIcon} alt="Mostrar/Ocultar contraseña"
               className="eye-icon"
-              onClick={togglePasswordVisibility}  // Alterna la visibilidad de la contraseña
+              onClick={togglePasswordVisibility}
             />
           </div>
-          <button type="submit" className="login-button">
-            Siguiente
-          </button>
+          <button type="submit" className="login-button">Siguiente</button>
         </form>
         <div className="register-link">
           <p>
@@ -108,7 +86,7 @@ function Login() {
         <Toast
           message={error}
           type="error"
-          onClose={() => setShowToast(false)}  // Oculta el Toast después de un tiempo
+          onClose={() => setShowToast(false)}
         />
       )}
     </div>

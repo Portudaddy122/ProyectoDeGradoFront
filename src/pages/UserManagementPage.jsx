@@ -202,8 +202,9 @@ const UserManagementPage = () => {
 
   return (
     <>
+    <Header title={'GESTIÓN DE USUARIOS'} subtitle={'Listado de usuarios del sistema'} />
       <section className='user-management-container'>
-        <Header title={'GESTIÓN DE USUARIOS'} subtitle={'Listado de usuarios del sistema'} />
+        
         <section className='user-management-search-export-container'>
         
           
