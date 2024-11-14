@@ -97,4 +97,33 @@ height: 20px;
   .Icon-container-menu.rotate {
     transform: rotate(180deg); /* Rotar el icono al abrir */
   }
-  
+  /* Responsive Sidebar */
+@media (max-width: 400px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.closed {
+    transform: translateX(-100%);
+  }
+
+  .sidebar-toggle-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 20px;
+    left: 10px;
+    width: 40px;
+    height: 40px;
+    background-color: #003400;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1000;
+  }
+
+  .sidebar-toggle-icon img {
+    width: 20px;
+    height: 20px;
+  }
+}

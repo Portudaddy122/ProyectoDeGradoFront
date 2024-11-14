@@ -16,3 +16,18 @@ export const obtenerListaEntrevista = () => {
 export const agendarEntrevista = (formData) => {
     return axios.post(`${base_URL}agendarEntrevista`, formData);
 };
+
+// Servicio para enviar un correo electrónico
+export const enviarCorreo = (data) => {
+    return axios.post(`${base_URL}enviarCorreo`, data);
+};
+// Servicio para cambiar el estado de la entrevista
+export const eliminarEntrevista = (idReservarEntrevista, nuevoEstado) => {
+    return axios.put(`${base_URL}eliminarEntrevista/${idReservarEntrevista}`, { nuevoEstado });
+};
+
+
+// Nuevo Servicio para obtener entrevistas por rango de fechas
+export const obtenerListaEntrevistaPorRango = (fechas) => {
+    return axios.post(`${base_URL}obtener/entrevistas/rango`, fechas);
+};

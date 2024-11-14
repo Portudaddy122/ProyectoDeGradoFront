@@ -12,7 +12,8 @@ import BtnActionsText from "./botones/BtnActionsText";
 import "./UserTable.css";
 import ExportActions from "./ExportActions";
 
-const UserTable = ({ users, onView, onEdit, onDelete, onCite, hideDefaultActions }) => {
+
+const UserTable = ({ users, onView, onEdit, onDelete, onCite, hideDefaultActions, exportTitle }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [filter, setFilter] = useState("");
@@ -39,7 +40,7 @@ const UserTable = ({ users, onView, onEdit, onDelete, onCite, hideDefaultActions
   );
 
   return (
-    <Paper sx={{ width: "99%", overflow: "hidden", border: "2px solid black", marginLeft: "5%", height: 'auto', fontFamily: "Kumbh Sans" }}>
+    <Paper sx={{ width: "95%", overflow: "hidden", border: "2px solid black", marginLeft: "5%", height: 'auto', fontFamily: "Kumbh Sans" }}>
       <div className="search-and-export">
         <TextField
           label="Buscar"
@@ -49,7 +50,12 @@ const UserTable = ({ users, onView, onEdit, onDelete, onCite, hideDefaultActions
           placeholder="Buscar por nombre, apellido o rol"
           style={{ margin: "10px", border: '2px solid black', borderRadius: "8px" }}
         />
-        <ExportActions />
+       
+       <ExportActions data={users} context="padres" selectedDate={new Date().toLocaleDateString()} title={exportTitle} />
+
+
+
+
       </div>
       <TableContainer>
         <Table>

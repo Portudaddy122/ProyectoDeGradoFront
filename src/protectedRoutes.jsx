@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children, role }) => {
             setToastMessage('Usuario no autenticado. Por favor, inicia sesión.');
             setShowToast(true);
             navigate('/login');
-        } else if (user && user.role !== role) {
+        } else if (user && !role.includes(user.role)) {
             setToastMessage('No tienes permiso para acceder a esta página.');
             setShowToast(true);
             navigate('/unauthorized');
@@ -26,12 +26,11 @@ const ProtectedRoute = ({ children, role }) => {
     }, [user, role, navigate]);
 
     if (user === null) {
-        // Puedes devolver un spinner u otro componente mientras se carga el usuario
         return <div>Verificando autenticación...</div>;
     }
 
-    if (!user || user.role !== role) {
-        return null; // Para prevenir que el contenido se renderice antes de la redirección
+    if (!user || !role.includes(user.role)) {
+        return null;
     }
 
     return (

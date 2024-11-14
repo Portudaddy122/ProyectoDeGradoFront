@@ -45,6 +45,7 @@ const Menu = () => {
 
   return (
     <>
+    
       <div className="sidebar">
         <div className='Img-container'>
           <img src={logo} alt='Loguito' />
@@ -113,7 +114,7 @@ const Menu = () => {
               </li>
 
               <li className='sidebar-container'>
-                <Link to="/categorias" className="sidebar-link">
+                <Link to="/ingresos" className="sidebar-link">
                   Control de ingresos
                   <i className="Icon-container-menu">
                     <img src={userIcon} alt='Control de Ingresos' />
@@ -166,7 +167,7 @@ const Menu = () => {
           {isProfesorOrPsicologo && (
             <li>
               <div className='sidebar-container'>
-                <Link to="/psicologoEntrevistas" className="sidebar-link">
+                <Link to="/listaEntrevistas" className="sidebar-link">
                   Entrevistas
                   <i className='Icon-container-menu'>
                     <img src={iconHome} alt='Home' />
@@ -197,7 +198,7 @@ const Menu = () => {
           {DropdownActas && isProfesorOrPsicologo && (
             <ul className="dropdown">
               <li className='sidebar-container'>
-                <Link to="/citar-apoderados" className="sidebar-link">
+                <Link to="/crearActa" className="sidebar-link">
                   Crear Acta
                 </Link>
               </li>

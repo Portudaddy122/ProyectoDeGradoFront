@@ -4,6 +4,7 @@ import { getPadre } from '../service/PadreDeFamilia.jsx';
 import UserTable from '../components/UserTable.jsx';
 import Header from '../components/Header.jsx';
 
+
 const UserListPadres = () => {
   const [padres, setPadres] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,17 +31,17 @@ const UserListPadres = () => {
 
   return (
     <>
-      <Header title="GESTION DE ACTAS" subtitle="Cite a un padre de familia" />
+      <Header title="GESTION DE CITAS" subtitle="Listado de los padres de familia registrados para citarlos" />
+      
       <div>
         {loading ? (
           <p>Cargando...</p>
         ) : (
-          <UserTable
-            users={padres}
-            onCite={handleCite}
-            hideDefaultActions={true}
-          />
+          <UserTable users={padres} onCite={handleCite} hideDefaultActions={true} selectedDate={new Date().toLocaleDateString()} />
+
+          
         )}
+        
       </div>
     </>
   );

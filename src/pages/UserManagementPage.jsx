@@ -210,11 +210,13 @@ const UserManagementPage = () => {
           
         </section>
         <UserTable
-          users={filteredUsers}
-          onView={handleView}
-          onEdit={isEditMode ? handleEdit : null}
-          onDelete={isEditMode ? handleDelete : null}
-        />
+  users={filteredUsers}
+  onView={handleView}
+  onEdit={isEditMode ? handleEdit : null}
+  onDelete={isEditMode ? handleDelete : null}
+  exportTitle="Listado de Usuarios del Sistema"
+/>
+
         {toast.show && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
 
         {/* Modal para ver datos */}

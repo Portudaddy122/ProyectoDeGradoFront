@@ -13,6 +13,8 @@ import MenuProfesores from './components/MenuProfesores.jsx';
 import InicioProfesores from './components/ComponentsProfesores/InicioProfesores.jsx';
 import UserListPadres from './pages/UserListPadres.jsx';
 import CitarPadres from './components/ComponentsProfesores/CitarPadres.jsx';
+import ListEntrevistas from './components/ComponentsProfesores/ListEntrevistas.jsx';
+import Informe from './components/Informe.jsx';
 
 
 const App = () => {
@@ -39,9 +41,17 @@ const AppContent = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/unauthorized" element={<Unauthorized />} /> {/* Agregar la ruta */}
 
-          {/* Rutas protegidas */}
+          {/* Administrador */}
           <Route
             path="/"
+            element={
+              <ProtectedRoute role="Administrador">
+                <UserManagementHome />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
             element={
               <ProtectedRoute role="Administrador">
                 <UserManagementHome />
@@ -72,49 +82,100 @@ const AppContent = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/categorias"
+            element={
+              <ProtectedRoute role="Administrador">
+                <Informe />
+              </ProtectedRoute>
+            }
+          />
+
+           {/* Profesor */}
 
 
           <Route
             path="/profesor"
             element={
-              <ProtectedRoute role="Profesor">
-                <UserProfesorHome />
+              <ProtectedRoute role={['Profesor', 'Psicologo']}>
+                <InicioProfesores />
               </ProtectedRoute>
             }
           />
-
-
-
-
           <Route
-            path="/psicologo"
+            path="/listaEntrevistas"
             element={
-              <ProtectedRoute role="Psicologo">
-                <UserProfesorHome />
+              <ProtectedRoute role={['Profesor', 'Psicologo']}>
+                <ListEntrevistas />
               </ProtectedRoute>
             }
           />
           <Route
             path="/crearActa"
             element={
-              <ProtectedRoute role="Psicologo">
-                <FormActas/>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/psicologoHome"
-            element={
-              <ProtectedRoute role="Psicologo">
-                <InicioProfesores/>
+              <ProtectedRoute role={['Profesor', 'Psicologo']}>
+                <FormActas />
               </ProtectedRoute>
             }
           />
           <Route
             path="/psicologoListPadres"
+            element={
+              <ProtectedRoute role={['Profesor', 'Psicologo']}>
+                <UserListPadres />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/formCitas"
+            element={
+              <ProtectedRoute role={['Profesor', 'Psicologo']}>
+                <CitarPadres />
+              </ProtectedRoute>
+            }
+          />
+
+
+             {/* Psicologo */}
+
+             <Route
+            path="/psicologo"
+            element={
+              <ProtectedRoute role={['Profesor', 'Psicologo']}>
+                <InicioProfesores/>
+              </ProtectedRoute>
+            }
+          />
+             <Route
+            path="/psicologoHome"
+            element={
+              <ProtectedRoute role={['Profesor', 'Psicologo']}>
+                <InicioProfesores/>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/listaEntrevistas"
+            element={
+              <ProtectedRoute role={['Profesor', 'Psicologo']}>
+                <ListEntrevistas />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/crearActa"
+            element={
+              <ProtectedRoute role={['Profesor', 'Psicologo']}>
+                <FormActas/>
+              </ProtectedRoute>
+            }
+          />
+         
+          <Route
+            path="/psicologoListPadres"
             
             element={
-              <ProtectedRoute role="Psicologo">
+              <ProtectedRoute role={['Profesor', 'Psicologo']}>
                 <UserListPadres/>
               </ProtectedRoute>
             }
@@ -123,7 +184,7 @@ const AppContent = () => {
             path="/form-actas"
             
             element={
-              <ProtectedRoute role="Psicologo">
+              <ProtectedRoute role={['Profesor', 'Psicologo']}>
                 <FormActas/>
               </ProtectedRoute>
             }
@@ -132,7 +193,7 @@ const AppContent = () => {
             path="/formCitas"
             
             element={
-              <ProtectedRoute role="Psicologo">
+              <ProtectedRoute role={['Profesor', 'Psicologo']}>
                 <CitarPadres/>
               </ProtectedRoute>
             }

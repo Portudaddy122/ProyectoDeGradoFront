@@ -1,0 +1,156 @@
+.entrevistas-container {
+    width: 90%;
+    margin: 20px auto;
+    font-family: 'Kumbh Sans', sans-serif;
+  }
+  
+  .table-container {
+    border: 2px solid black;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  thead th {
+    background-color: #f5f5f5;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Espaciado entre los botones */
+  }
+  
+  .action-btn {
+    border: none;
+    padding: 8px;
+    margin: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+  }
+  
+  .complete-btn {
+    background-color: #009929; /* Verde */
+  }
+  
+  .complete-btn:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+  }
+  
+  .cancel-btn {
+    background-color: #992500; /* Rojo */
+  }
+  
+  .cancel-btn:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+  }
+  
+  .create-acta-btn {
+    background-color: #009929; /* Azul */
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .create-acta-btn:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+  }
+  
+  .action-btn img {
+    width: 20px;
+    height: 20px;
+  }
+  .titulosemiprincipal{
+    padding-left: 30%;
+    border: 1px solid black;
+    width: 70%;
+    height: 60px;
+    padding-top: 30px;
+    border-radius: 10px;
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 0 10px;
+  }
+  
+  .date-picker-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+  
+  .export-actions-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .header-actions .export-actions-container img {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .header-actions .export-actions-container img:hover {
+    transform: scale(1.1);
+  }
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.create-acta-btn {
+    background-color: #009929;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 50px;
+    height: 35px;
+}
+
+.create-acta-btn:hover {
+    background-color: #0056b3;
+}
+
+.action-btn.create-acta-btn {
+    background-color: #009929;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.action-btn.create-acta-btn:hover {
+    background-color: #009929;
+}

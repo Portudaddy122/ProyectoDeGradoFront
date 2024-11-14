@@ -1,21 +1,25 @@
 .export-actions-container {
-    display: flex;
-    /* gap: 10px; */
-    padding: 5px;
-    border-radius: 10px;
-    
-    width: 15%;
-    height: 9%;
-    padding-top: 10px;
-   
-    
-  }
-  
-  .export-actions-container img {
-    width: 50px;
-    height: 30px;
-    cursor: pointer;
-   
-    /* border:1px solid green */
-  }
-  
+  display: flex;
+  gap: 15px;
+  padding: 5px;
+  border-radius: 10px;
+  width: 15%;
+  height: 9%;
+  padding-top: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.export-actions-container img {
+  width: 50px;
+  height: 30px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efecto hover */
+.export-actions-container img:hover {
+  transform: scale(1.1); /* Aumenta ligeramente el tamaño */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra al pasar el cursor */
+  filter: brightness(1.2); /* Aumenta el brillo */
+}
