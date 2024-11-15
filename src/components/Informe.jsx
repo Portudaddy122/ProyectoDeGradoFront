@@ -101,12 +101,13 @@ const Informe = () => {
             const doc = new jsPDF();
             doc.text(`Padres de Familia Citados del ${startDate} al ${endDate}`, 14, 10);
 
-            const tableColumn = ['Nombres', 'Apellido Paterno', 'Apellido Materno', 'Correo', 'Estado'];
+            const tableColumn = ['Nombres', 'Apellido Paterno', 'Apellido Materno', 'Correo', 'Hora', 'Estado'];
             const tableRows = citas.map((cita) => [
                 cita.nombres,
                 cita.apellidopaterno,
                 cita.apellidomaterno,
                 cita.email,
+                cita.nuevaHorafinEntrevista,
                 cita.estado ? 'Completado' : 'Pendiente',
             ]);
 
