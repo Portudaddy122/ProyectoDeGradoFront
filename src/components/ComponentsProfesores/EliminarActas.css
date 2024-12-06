@@ -1,0 +1,57 @@
+.eliminar-actas-container {
+    padding: 20px;
+    margin-left: 20px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .search-bar {
+    flex: 1;
+  }
+  
+  .navigate-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .navigate-btn .icon {
+    margin-right: 5px;
+  }
+  
+  
+  .action-btn.activate-btn {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+   margin-left: 50px;
+  }
+  
+  .action-btn.activate-btn:hover {
+    background-color: #328821;
+  }
+  .close-btn {
+    background-color: #992500;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .close-btn:hover {
+    background-color: #b7371d; /* Un color ligeramente más claro para hover */
+  }
+  

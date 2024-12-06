@@ -1,0 +1,121 @@
+/* General container styles */
+.confirmacion-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #f4f7f6;
+    padding: 20px;
+  }
+  
+  .confirmacion-card {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px 30px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .confirmacion-header h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #1c1c1c;
+  }
+  
+  .confirmacion-header p {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  .confirmacion-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .confirmacion-input {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .confirmacion-input:focus {
+    outline: none;
+    border-color: #009929;
+    box-shadow: 0 0 8px rgba(0, 153, 41, 0.3);
+  }
+  
+  .confirmacion-error {
+    color: red;
+    font-size: 0.9em;
+  }
+  
+  .confirmacion-button {
+    background-color: #009929;
+    color: #ffffff;
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .confirmacion-button:hover {
+    background-color: #007d22;
+    transform: scale(1.03);
+  }
+  
+  .confirmacion-footer {
+    margin-top: 20px;
+  }
+  
+  .confirmacion-progress {
+    list-style: none;
+    display: flex;
+    justify-content: space-between; /* Separar pasos */
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .confirmacion-progress li {
+    text-align: center;
+    color: #ddd;
+    flex: 1;
+    font-size: 0.9em;
+  }
+  
+  .confirmacion-progress li.active {
+    color: #009929;
+    font-weight: bold;
+  }
+  
+  /* Responsivo */
+  @media (min-width: 768px) {
+    .confirmacion-card {
+      padding: 50px 40px;
+    }
+  
+    .confirmacion-header h2 {
+      font-size: 2em;
+    }
+  
+    .confirmacion-progress {
+      gap: 20px;
+      font-size: 1em;
+    }
+  }
+  

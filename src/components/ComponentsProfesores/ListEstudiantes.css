@@ -1,0 +1,43 @@
+.form-container {
+  padding: 20px;
+  max-width: 100%;
+  margin: auto;
+  border: black solid 2px;
+  margin-left: 50px;
+  border-radius: 15px;
+}
+
+.student-search {
+  margin-bottom: 20px;
+
+}
+
+.student-input {
+  width: 100%;
+  max-width: 90%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid black;
+  border-radius: 12px;
+  margin-top: 10px;
+  
+}
+
+.data-grid-container {
+  margin-top: 20px;
+  border: black solid 2px;
+  border-radius: 5px;
+}
+
+.crear-button {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.crear-button:hover {
+  background-color: darkgreen;
+}

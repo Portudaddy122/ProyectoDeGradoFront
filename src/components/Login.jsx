@@ -6,6 +6,9 @@ import Toast from '../components/Toast';  // Importa el componente Toast para mo
 import './Login.css';
 import EyeIcon from '../assets/icons/Eye.svg';  // Importa el ícono del ojo
 import logo from '../assets/icons/logo.svg';
+import { registerUserLogin } from '../service/users.service.jsx';
+
+
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -20,25 +23,36 @@ function Login() {
     e.preventDefault();
     
     try {
-      const data = await loginService.login(email, password);  // Autentica con el servicio
-      login(data.token, data.user);  // Guarda los datos en el contexto
-
-      // Redirigir basado en el rol del usuario
+      const data = await loginService.login(email, password); // Autenticar al usuario
+      login(data.token, data.user); // Guardar el token y los datos del usuario en el contexto
+  
+      // Registrar el ingreso del usuario logueado
+      try {
+        await registerUserLogin(
+          data.user.id, 
+          `${data.user.nombres} ${data.user.apellidopaterno} ${data.user.apellidomaterno}`, 
+          data.user.role, 
+          data.token
+        );
+      } catch (err) {
+        console.error('Error al registrar el ingreso:', err);
+      }
+  
+      // Redirigir según el rol del usuario
       if (data.user.role === 'Administrador') {
         navigate('/admin');
       } else if (data.user.role === 'Profesor') {
-        navigate('/profesor');  // Aquí redirigimos a la ruta correcta
-      } else if (data.user.role === 'Padre De Familia') {
-        navigate('/padre');
+        navigate('/profesor');
+      } else if (data.user.role === 'Padre de Familia') {
+        navigate('/padres');
       } else if (data.user.role === 'Psicologo') {
         navigate('/psicologo');
       } else {
         navigate('/unauthorized');
       }
-      
     } catch (err) {
       setError(err.message || 'Error al iniciar sesión');
-      setShowToast(true);  // Muestra el Toast al haber error
+      setShowToast(true); // Mostrar el mensaje de error
     }
   };
 

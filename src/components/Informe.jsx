@@ -3,10 +3,10 @@ import './Informe.css';
 import Header from './Header.jsx';
 import imgInforme from '../assets/image/Informe.jpg';
 import imgActas from '../assets/image/Actas.jpg';
-import imgProfesores from '../assets/image/Profesores.jpeg';
+import imgProfesores from '../assets/image/Profesores.png';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { getUsuarios } from '../service/users.service.jsx';
+import { getUsuarios, obtenerIngresosPorRango } from '../service/users.service.jsx';
 import { getProfesor } from '../service/profesor.service.jsx';
 import { getPsicologo } from '../service/psicologo.service.jsx';
 import { obtenerListaEntrevistaPorRango } from '../service/teoriaDeColas.service.jsx';
@@ -123,6 +123,42 @@ const Informe = () => {
         }
     };
 
+    const downloadIngresosPDF = async () => {
+        if (!startDate || !endDate) {
+            alert('Por favor selecciona ambas fechas.');
+            return;
+        }
+    
+        try {
+            const response = await obtenerIngresosPorRango({ startDate, endDate }); // Llama al servicio
+            const ingresos = response; // Los datos del backend ya están en response.data
+    
+            const doc = new jsPDF();
+            doc.text(`Ingresos de Usuarios al Sistema del ${startDate} al ${endDate}`, 14, 10);
+    
+            const tableColumn = ['Nombre Completo', 'Rol', 'Fecha de Ingreso', 'Hora de Ingreso'];
+            const tableRows = ingresos.map((ingreso) => [
+                ingreso.nombrecompleto || 'Sin registro',
+                ingreso.rol || 'Sin registro',
+                ingreso.fechaingreso?.split('T')[0] || 'Sin registro',
+                ingreso.horaingreso || 'Sin registro',
+            ]);
+    
+            autoTable(doc, {
+                head: [tableColumn],
+                body: tableRows,
+                startY: 20,
+            });
+    
+            doc.save(`ingresos_${startDate}_a_${endDate}.pdf`);
+        } catch (error) {
+            console.error('Error al generar el PDF de ingresos:', error);
+            alert('Hubo un error al generar el reporte. Por favor, intenta nuevamente.');
+        }
+    };
+    
+    
+
     return (
         <>
             <Header title="GESTION DE REPORTES" subtitle="Listado de todos los reportes del sistema" />
@@ -148,6 +184,7 @@ const Informe = () => {
                         <h3 className="informe-titulo">Reporte de Psicólogos Registrados</h3>
                         <button onClick={downloadPsicologosPDF} className="informe-button">Descargar PDF</button>
                     </div>
+                    
                     {/* Reporte de Citas con Rango de Fechas */}
                     <div className="informe-card">
                         <img src={imgActas} alt="Reporte de Citas" className="informe-image" />
@@ -170,11 +207,38 @@ const Informe = () => {
                                 onChange={(e) => setEndDate(e.target.value)}
                             />
                         </div>
-
                         <button onClick={downloadCitasPDF} className="informe-button">
                             Descargar PDF
                         </button>
                     </div>
+
+                    {/* Reporte de Usuarios con Rango de Fechas */}
+                 {/* Reporte de Usuarios con Rango de Fechas */}
+<div className="informe-card">
+    <img src={imgActas} alt="Reporte de Ingresos" className="informe-image" />
+    <h3 className="informe-titulo">Reporte de Ingreso de Usuarios al Sistema por Rango de Fechas</h3>
+
+    <div className="date-selector">
+        <label htmlFor="start-date-ingresos">Fecha Inicial:</label>
+        <input
+            type="date"
+            id="start-date-ingresos"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+        />
+
+        <label htmlFor="end-date-ingresos">Fecha Final:</label>
+        <input
+            type="date"
+            id="end-date-ingresos"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+        />
+    </div>
+    <button onClick={downloadIngresosPDF} className="informe-button">
+        Descargar PDF
+    </button>
+</div>
                 </div>
             </div>
         </>

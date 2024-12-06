@@ -17,6 +17,10 @@ export const agendarEntrevista = (formData) => {
     return axios.post(`${base_URL}agendarEntrevista`, formData);
 };
 
+export const crearReservaEntrevista = (data) => {
+    return axios.post(`${base_URL}crear/reservarentrevista`, data);
+  };
+
 // Servicio para enviar un correo electrónico
 export const enviarCorreo = (data) => {
     return axios.post(`${base_URL}enviarCorreo`, data);
@@ -31,3 +35,9 @@ export const eliminarEntrevista = (idReservarEntrevista, nuevoEstado) => {
 export const obtenerListaEntrevistaPorRango = (fechas) => {
     return axios.post(`${base_URL}obtener/entrevistas/rango`, fechas);
 };
+
+export const obtenerEntrevistasPorPadre = (idPadre) => {
+    return axios.get(`${base_URL}verEntrevistasPadres/${idPadre}`);
+  };
+  
+

@@ -1,0 +1,62 @@
+.editar-acta-container {
+    padding: 20px;
+    margin-left: 20px;
+  }
+  
+  .student-search {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    
+    
+    
+  }
+  
+  .student-search label {
+    margin-right: 10px;
+    font-weight: bold;
+    width: 90%;
+   
+  }
+  
+  .student-input {
+    padding: 8px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    border: black solid 2px;
+  }
+  
+  .acciones-buttons {
+    display: flex;
+    gap: 20px;
+    padding-top: 10px;
+    padding-left: 60px;
+  }
+  
+  .ver-button,
+  .editar-button,
+  .eliminar-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .ver-button {
+    background-color: #006414;
+    color: white;
+    border-radius: 10px;
+  }
+  
+  .editar-button {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .eliminar-button {
+    background-color: #dc3545;
+    color: white;
+  }
+  

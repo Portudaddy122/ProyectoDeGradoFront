@@ -16,7 +16,8 @@ import { getPadreById, deletePadre, putPadre, getPadre } from '../service/PadreD
 import { getDirecciones } from '../service/direccion.service.jsx';
 import { getEstudianteById, putEstudiante, deleteEstudiante } from '../service/Estudiante.service.jsx';
 import { getPsicologoById, deletePsicologo, putPsicologo } from '../service/psicologo.service.jsx';
-import {getCursos, getCursosById} from '../service/cursos.service.jsx'
+import { getCursos, getCursosById } from '../service/cursos.service.jsx'
+import { getHorariosById } from '../service/horario.service.jsx'
 import { Padding } from '@mui/icons-material';
 
 const UserManagementPage = () => {
@@ -79,6 +80,12 @@ const UserManagementPage = () => {
     try {
       if (user.rol === 'Profesor') {
         response = await getProfesorById(user.id);
+        // Obtener el horario basado en el idhorario del profesor
+        if (response.data.idhorario) {
+          const horarioResponse = await getHorariosById(response.data.idhorario);
+          response.data.horainicio = horarioResponse.data.horainicio;
+          response.data.horafin = horarioResponse.data.horafin;
+        }
       } else if (user.rol === 'Administrador') {
         response = await getAdministradorById(user.id);
       } else if (user.rol === 'Padre de Familia') {
@@ -89,6 +96,11 @@ const UserManagementPage = () => {
         setCurso(cursoResponse.data);
       } else if (user.rol === 'Psicologo') {
         response = await getPsicologoById(user.id);
+        if (response.data.idhorario) {
+          const horarioResponse = await getHorariosById(response.data.idhorario);
+          response.data.horainicio = horarioResponse.data.horainicio;
+          response.data.horafin = horarioResponse.data.horafin;
+        }
       }
 
       setSelectedUser({ ...response.data, id: user.id });
@@ -114,63 +126,88 @@ const UserManagementPage = () => {
       } else if (user.rol === 'Psicologo') {
         response = await getPsicologoById(user.id);
       }
-
-      setSelectedUser({ ...response.data, id: user.id });
+  
+      // Asegúrate de que `originalData` se establezca correctamente
+      setSelectedUser({ 
+        ...response.data, 
+        id: user.id, 
+        originalData: { ...response.data } 
+      });
+  
       setIsModalOpen(true);
     } catch (error) {
       console.error('Error al obtener detalles del usuario para editar:', error);
     }
   };
+  
 
   const saveEditedUser = async () => {
-    const updatedFields = {};
-
-    // Asegúrate de que estos campos se incluyan solo si existen y son válidos
-    if (selectedUser.nombres && selectedUser.nombres.trim() !== "") {
-        updatedFields.nombres = selectedUser.nombres.trim();
+    if (!selectedUser) {
+      console.error("selectedUser no está definido");
+      return;
     }
-    if (selectedUser.apellidopaterno && selectedUser.apellidopaterno.trim() !== "") {
-        updatedFields.apellidopaterno = selectedUser.apellidopaterno.trim();
-    }
-    if (selectedUser.apellidomaterno && selectedUser.apellidomaterno.trim() !== "") {
-        updatedFields.apellidomaterno = selectedUser.apellidomaterno.trim();
-    }
-    if (selectedUser.fechaDeNacimiento) {
-        updatedFields.fechaDeNacimiento = selectedUser.fechaDeNacimiento.slice(0, 10);
-    }
-
-    // Asegúrate de que se están enviando los campos idPadre y idCurso
-    if (selectedUser.idPadre) {
-        updatedFields.idPadre = selectedUser.idPadre;
+  
+    // Preparar los campos a enviar basados en el rol del usuario
+    const updatedFields = {
+      iddireccion: selectedUser.iddireccion,
+      nombres: selectedUser.nombres,
+      apellidopaterno: selectedUser.apellidopaterno,
+      apellidomaterno: selectedUser.apellidomaterno,
+      email: selectedUser.email,
+      numcelular: selectedUser.numcelular,
+      contrasenia: selectedUser.contrasenia,
+      estado: selectedUser.estado,
+      rol: selectedUser.rol,
+    };
+  
+    // Si el rol es "Estudiante", usamos "fechanacimiento"
+    if (selectedUser.rol === 'Estudiante') {
+      updatedFields.fechanacimiento = selectedUser.fechanacimiento;
+      updatedFields.idpadre = selectedUser.idpadre;
+      updatedFields.idcurso = selectedUser.idcurso;
     } else {
-        console.error("Falta idPadre en los datos del formulario");
+      // Para los demás roles, usamos "fechadenacimiento"
+      updatedFields.fechadenacimiento = selectedUser.fechadenacimiento;
     }
-    if (selectedUser.idCurso) {
-        updatedFields.idCurso = selectedUser.idCurso;
-    } else {
-        console.error("Falta idCurso en los datos del formulario");
+  
+    // Si es un psicólogo o profesor, incluir `idhorario`
+    if (selectedUser.rol === 'Psicologo' || selectedUser.rol === 'Profesor') {
+      updatedFields.idhorario = selectedUser.idhorario;
     }
-
-    // Estado y Rol siempre enviados
-    updatedFields.estado = selectedUser.estado;
-    updatedFields.rol = selectedUser.rol;
-
-    console.log("Datos enviados para actualizar el estudiante:", updatedFields); 
-
+  
     try {
-        if (selectedUser.rol === 'Estudiante') {
-            await putEstudiante(selectedUser.id, updatedFields);
-        }
-        showToast('Usuario actualizado exitosamente', 'success');
-        fetchUsers();
+      let response;
+      
+      // Enviar la actualización según el rol del usuario
+      switch (selectedUser.rol) {
+        case 'Profesor':
+          response = await putProfesor(selectedUser.id, updatedFields);
+          break;
+        case 'Administrador':
+          response = await putAdministrador(selectedUser.id, updatedFields);
+          break;
+        case 'Padre de Familia':
+          response = await putPadre(selectedUser.id, updatedFields);
+          break;
+        case 'Estudiante':
+          response = await putEstudiante(selectedUser.id, updatedFields);
+          break;
+        case 'Psicologo':
+          response = await putPsicologo(selectedUser.id, updatedFields);
+          break;
+        default:
+          console.error('Rol no reconocido:', selectedUser.rol);
+          return;
+      }
+  
+      showToast('Usuario actualizado exitosamente', 'success');
+      fetchUsers();
+      setIsModalOpen(false);
     } catch (error) {
-        console.error('Error al actualizar usuario:', error.response?.data || error.message);
-        showToast(error.response?.data?.error || 'Error al actualizar usuario', 'error');
+      console.error('Error al actualizar usuario:', error.response?.data || error.message);
+      showToast(error.response?.data?.error || 'Error al actualizar usuario', 'error');
     }
-    setIsModalOpen(false);
-};
-
-
+  };
 
   const handleDelete = (user) => {
     setSelectedUser(user);
@@ -202,20 +239,20 @@ const UserManagementPage = () => {
 
   return (
     <>
-    <Header title={'GESTIÓN DE USUARIOS'} subtitle={'Listado de usuarios del sistema'} />
+      <Header title={'GESTIÓN DE USUARIOS'} subtitle={'Listado de usuarios del sistema'} />
       <section className='user-management-container'>
-        
+
         <section className='user-management-search-export-container'>
-        
-          
+
+
         </section>
         <UserTable
-  users={filteredUsers}
-  onView={handleView}
-  onEdit={isEditMode ? handleEdit : null}
-  onDelete={isEditMode ? handleDelete : null}
-  exportTitle="Listado de Usuarios del Sistema"
-/>
+          users={filteredUsers}
+          onView={handleView}
+          onEdit={isEditMode ? handleEdit : null}
+          onDelete={isEditMode ? handleDelete : null}
+          exportTitle="Listado de Usuarios del Sistema"
+        />
 
         {toast.show && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
 
@@ -225,7 +262,20 @@ const UserManagementPage = () => {
           title={`Visualizar ${selectedUser?.rol}`}
           content={selectedUser && (
             <div>
-              {selectedUser.rol === 'Estudiante' ? (
+              {selectedUser.rol === 'Profesor' ? (
+                <>
+                  <p><strong>Nombre:</strong> {selectedUser.nombres}</p>
+                  <p><strong>Apellido Paterno:</strong> {selectedUser.apellidopaterno}</p>
+                  <p><strong>Apellido Materno:</strong> {selectedUser.apellidomaterno}</p>
+                  <p><strong>Correo:</strong> {selectedUser.email}</p>
+                  <p><strong>Número Celular:</strong> {selectedUser.numcelular}</p>
+                  <p><strong>Fecha de Nacimiento:</strong> {selectedUser.fechadenacimiento}</p>
+                  <p><strong>Rol:</strong> {selectedUser.rol}</p>
+                  <p><strong>Hora de Inicio de la entrevista:</strong> {selectedUser.horainicio}</p>
+                  <p><strong>Hora de Finalizacion de la entrevista:</strong> {selectedUser.horafin}</p>
+                </>
+              ) :
+               selectedUser.rol === 'Estudiante' ? (
                 <>
                   <p><strong>Padre de Familia:</strong> {selectedUser.nombres} {selectedUser.apellidopaterno} {selectedUser.apellidomaterno} </p>
                   <p><strong>Curso:</strong> {curso ? `${curso.nombrecurso} ${curso.paralelo} - ${curso.nivel}` : 'Cargando...'}</p>
@@ -235,7 +285,20 @@ const UserManagementPage = () => {
                   <p><strong>Fecha de Nacimiento:</strong> {selectedUser.fechanacimiento}</p>
                   <p><strong>Rol:</strong> {selectedUser.rol}</p>
                 </>
-              ) : (
+              ) : selectedUser.rol === 'Psicologo' ? (
+                <>
+                 <p><strong>Nombre:</strong> {selectedUser.nombres}</p>
+                  <p><strong>Apellido Paterno:</strong> {selectedUser.apellidopaterno}</p>
+                  <p><strong>Apellido Materno:</strong> {selectedUser.apellidomaterno}</p>
+                  <p><strong>Correo:</strong> {selectedUser.email}</p>
+                  <p><strong>Número Celular:</strong> {selectedUser.numcelular}</p>
+                  <p><strong>Fecha de Nacimiento:</strong> {selectedUser.fechadenacimiento}</p>
+                  <p><strong>Rol:</strong> {selectedUser.rol}</p>
+                  <p><strong>Hora de Inicio de entrevista:</strong> {selectedUser.horainicio}</p>
+                  <p><strong>Hora de Finalizacion de la entrevista:</strong> {selectedUser.horafin}</p>
+                </>
+                ):
+              (
                 <>
                   <p><strong>Nombre:</strong> {selectedUser.nombres}</p>
                   <p><strong>Apellido Paterno:</strong> {selectedUser.apellidopaterno}</p>
@@ -251,6 +314,7 @@ const UserManagementPage = () => {
           onClose={() => setIsViewModalOpen(false)}
         />
 
+
         {/* Modal para editar datos */}
         <DynamicModelForUsers
           isOpen={isModalOpen}
@@ -260,7 +324,7 @@ const UserManagementPage = () => {
               {selectedUser.rol === 'Estudiante' ? (
                 <>
 
-                
+
                   <label>ID Padre:</label>
                   <input
                     type="text"

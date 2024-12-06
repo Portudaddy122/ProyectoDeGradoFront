@@ -6,3 +6,7 @@ const base_URL = 'http://localhost:4000/';
 export const enviarCorreo = (data) => {
     return axios.post(`${base_URL}enviarCorreo`, data);
 };
+
+export const enviarCorreoDeConfirmacion = (data) => {
+    return axios.post(`${base_URL}enviarCorreoConfirmacion`, data);
+};

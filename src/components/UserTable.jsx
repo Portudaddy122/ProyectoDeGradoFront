@@ -40,6 +40,7 @@ const UserTable = ({ users, onView, onEdit, onDelete, onCite, hideDefaultActions
   );
 
   return (
+    
     <Paper sx={{ width: "95%", overflow: "hidden", border: "2px solid black", marginLeft: "5%", height: 'auto', fontFamily: "Kumbh Sans" }}>
       <div className="search-and-export">
         <TextField

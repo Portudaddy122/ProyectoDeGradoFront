@@ -7,10 +7,12 @@ import { getMateria } from '../../service/materia.service.jsx';
 import './CitarPadres.css';
 import Header from '../Header.jsx';
 import Toast from '../Toast.jsx';
+import FullScreenLoader from './ProgresoCircular.jsx';
 
 const CitarPadres = () => {
   const location = useLocation();
   const { idPadre } = location.state || {};
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     nombres: '',
@@ -69,11 +71,7 @@ const CitarPadres = () => {
     const fetchMaterias = async () => {
       try {
         const response = await getMateria();
-        if (response.data) {
-          setMaterias(response.data);
-        } else {
-          setMaterias([]);
-        }
+        setMaterias(response.data || []);
       } catch (error) {
         console.error('Error al obtener materias:', error);
         setMaterias([]);
@@ -81,7 +79,6 @@ const CitarPadres = () => {
     };
     fetchMaterias();
   }, []);
-  
 
   const handleDateChange = (e) => {
     const selectedDate = e.target.value;
@@ -100,36 +97,20 @@ const CitarPadres = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
-    if (name === "materia") {
-      console.log(`Valor seleccionado para materia: ${value}`);
-      // Convertir solo si el valor no está vacío
-      const parsedValue = value !== "" ? Number(value) : "";
-      console.log(`Materia seleccionada (convertida): ${parsedValue}`);
-      setFormData({ ...formData, [name]: parsedValue });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    setFormData({ ...formData, [name]: name === "materia" && value !== "" ? Number(value) : value });
   };
-  
-  
-  
-  
-  
 
   const handleMotivoChange = (e) => {
     const selectedMotivo = motivos.find(m => m.idmotivo === parseInt(e.target.value));
     setFormData({
       ...formData,
-      motivo: parseInt(e.target.value), // Convertir a número
+      motivo: parseInt(e.target.value),
       nombremotivo: selectedMotivo ? selectedMotivo.nombremotivo : ''
     });
   };
-  
-  
-  // Función para limpiar solo los campos seleccionados
+
   const handleClear = () => {
-    setFormData((prevFormData) => ({
+    setFormData(prevFormData => ({
       ...prevFormData,
       motivo: '',
       materia: '',
@@ -138,97 +119,79 @@ const CitarPadres = () => {
       descripcion: '',
     }));
   };
- const handleSubmit = async (e) => {
-  e.preventDefault();
 
-  const { motivo, nombremotivo, materia, fecha, descripcion } = formData;
-  const idProfesor = 1;
-  const idPsicologo = 2;
-  const idMotivo = parseInt(motivo);
-  const idMateria = parseInt(materia);
-  const profesor = JSON.parse(localStorage.getItem('user'));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-  console.log("Datos del formulario:");
-  console.log("idPadre:", idPadre);
-  console.log("idProfesor:", idProfesor);
-  console.log("idPsicologo:", idPsicologo);
-  console.log("idMotivo:", idMotivo);
-  console.log("idMateria:", idMateria);
-  console.log("fecha:", fecha);
-  console.log("descripcion:", descripcion);
+    const usuario = JSON.parse(localStorage.getItem('user'));
+    if (!usuario || (usuario.role !== 'Profesor' && usuario.role !== 'Psicologo')) {
+      setToast({ message: 'Solo profesores y psicólogos pueden agendar citas.', type: 'error' });
+      setIsLoading(false);
+      return;
+    }
 
-  // Validar que todos los campos sean válidos
-  if (
-    !idProfesor ||
-    !idPsicologo ||
-    !idPadre ||
-    isNaN(idMotivo) ||
-    isNaN(idMateria) ||
-    !fecha ||
-    !descripcion
-  ) {
-    setToast({ message: 'Por favor, completa todos los campos correctamente antes de enviar.', type: 'error' });
-    return;
-  }
+    const idProfesor = usuario.role === 'Profesor' ? usuario.id : null;
+    const idPsicologo = usuario.role === 'Psicologo' ? usuario.id : null;
 
-  try {
-    console.log("Enviando datos al backend:");
-    const response = await agendarEntrevista({
-      idProfesor,
-      idPsicologo,
-      idPadre,
-      fecha,
-      descripcion,
-      idMotivo,
-      idMateria
-    });
+    const { motivo, nombremotivo, materia, fecha, descripcion } = formData;
+    const idPadre = location.state?.idPadre;
+    const idMotivo = parseInt(motivo);
+    const idMateria = parseInt(materia);
 
-    console.log("Respuesta del backend:", response);
+    if ((!idProfesor && !idPsicologo) || !idPadre || isNaN(idMotivo) || !materia || !fecha || !descripcion) {
+      setToast({ message: 'Por favor, completa todos los campos correctamente.', type: 'error' });
+      setIsLoading(false);
+      return;
+    }
 
-    if (response.status === 201) {
-      const { horario, idreservarentrevista } = response.data;
-
-      console.log("Enviando correo de confirmación");
-      await enviarCorreo({
+    try {
+      const response = await agendarEntrevista({
+        idProfesor,
+        idPsicologo,
         idPadre,
-        motivo: nombremotivo,
-        materia,
         fecha,
-        horario,
         descripcion,
-        profesor,
-        idReservarEntrevista: idreservarentrevista
+        idMotivo,
+        idMateria,
       });
 
-      setToast({ message: 'Cita agendada y correo enviado exitosamente.', type: 'success' });
-      handleClear();
-    }
-  } catch (error) {
-    console.error("Error al agendar la entrevista:", error.response?.data || error.message);
+      if (response.status === 201) {
+        const { horafinentrevista, idreservarentrevista } = response.data;
 
-    // Manejo de errores del backend
-    if (error.response) {
-      const backendError = error.response.data?.error;
-      if (backendError === 'La entrevista excede el horario permitido') {
-        setToast({ message: 'La entrevista excede el horario permitido. Intente con un horario diferente.', type: 'error' });
-      } else if (backendError === 'No se encontró una hora previa para esta fecha') {
-        setToast({ message: 'No se encontró una hora previa, es la primera entrevista del día.', type: 'info' });
-      } else {
-        setToast({ message: backendError || 'Error inesperado al agendar la entrevista.', type: 'error' });
+        const profesorData = {
+          id: usuario.id,
+          nombres: usuario.nombres,
+          apellidopaterno: usuario.apellidopaterno,
+          apellidomaterno: usuario.apellidomaterno,
+          role: usuario.role,
+        };
+
+        await enviarCorreo({
+          idPadre,
+          motivo: nombremotivo,
+          materia: materias.find(m => m.idmateria === idMateria)?.nombre || 'Materia desconocida',
+          fecha,
+          horario: horafinentrevista,
+          descripcion,
+          profesor: profesorData,
+          idReservarEntrevista: idreservarentrevista,
+        });
+
+        setToast({ message: 'Cita agendada y correo enviado exitosamente.', type: 'success' });
+        handleClear();
       }
-    } else {
-      setToast({ message: 'Error al agendar la entrevista o enviar el correo.', type: 'error' });
+    } catch (error) {
+      setToast({ message: 'Error al agendar la cita o enviar el correo.', type: 'error' });
+    } finally {
+      setIsLoading(false);
     }
-  }
-};
+  };
 
-  
-  
-  
-  
   return (
     <>
-      <Header title="CREACION DE UNA NUEVA CITA" subtitle={"Llene todos los campos para citar al padre de familia"} />
+      {isLoading && <FullScreenLoader />}
+      <Header title="CREACIÓN DE UNA NUEVA CITA" subtitle="Llene todos los campos para citar al padre de familia" />
       <div className="citar-form-container">
         <form onSubmit={handleSubmit}>
           <div className="form-group-inline">
@@ -242,53 +205,57 @@ const CitarPadres = () => {
             </div>
           </div>
           <div className="form-group">
-          <select
-  name="motivo"
-  value={formData.motivo}
-  onChange={handleMotivoChange}
-  className="form-select"
-  required
->
-  <option value="">Selecciona el motivo</option>
-  {motivos.map((motivo) => (
-    <option key={motivo.idmotivo} value={motivo.idmotivo}>
-      {motivo.nombremotivo}
-    </option>
-  ))}
-</select>
-
-<div className="form-group">
-  <label>Materia</label>
-  <select 
-    name="materia" 
-    value={formData.materia || ""} 
-    onChange={handleChange} 
-    className="form-select" 
-    required
-  >
-    <option value="">Selecciona la materia</option>
-    {materias.length > 0 && materias.map((materia) => (
-      // Asegúrate de que materia.idMateria no sea undefined antes de usar toString()
-      <option key={materia.idmateria} value={materia.idmateria ? materia.idmateria.toString() : ""}>
-        {materia.nombre}
-      </option>
-    ))}
-  </select>
-</div>
-
-
-
-
-
-
+            <label>Motivo</label>
+            <select
+              name="motivo"
+              value={formData.motivo}
+              onChange={handleMotivoChange}
+              className="form-select"
+              required
+            >
+              <option value="">Selecciona el motivo</option>
+              {motivos.map(motivo => (
+                <option key={motivo.idmotivo} value={motivo.idmotivo}>{motivo.nombremotivo}</option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Materia</label>
+            <select
+              name="materia"
+              value={formData.materia || ""}
+              onChange={handleChange}
+              className="form-select"
+              required
+            >
+              <option value="">Selecciona la materia</option>
+              {materias.map(materia => (
+                <option key={materia.idmateria} value={materia.idmateria || ""}>{materia.nombre}</option>
+              ))}
+            </select>
           </div>
           <div className="form-group">
             <label>Fecha de la entrevista</label>
-            <input type="date" name="fecha" value={formData.fecha} onChange={handleDateChange} className="form-input" min={todayDate} required />
+            <input
+              type="date"
+              name="fecha"
+              value={formData.fecha}
+              onChange={handleDateChange}
+              className="form-input"
+              min={todayDate}
+              required
+            />
           </div>
           <div className="form-group">
             <label>Descripción</label>
-            <textarea name="descripcion" value={formData.descripcion} onChange={handleChange} className="form-textarea" required placeholder='Escriba la descripción del mensaje'></textarea>
+            <textarea
+              name="descripcion"
+              value={formData.descripcion}
+              onChange={handleChange}
+              className="form-textarea"
+              required
+              placeholder="Escriba la descripción del mensaje"
+            ></textarea>
           </div>
           <div className="form-actions">
             <button type="button" className="form-button limpiar" onClick={handleClear}>Limpiar</button>

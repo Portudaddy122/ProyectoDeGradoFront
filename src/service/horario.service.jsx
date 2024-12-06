@@ -10,5 +10,5 @@ export const getHorarios = () => {
 
 
 export const getHorariosById = (idhorario) => {
-    return axios.get(`${base_URL}obtener/horario/:idHorario${idhorario}`); // El ID debe estar presente en la URL
+    return axios.get(`${base_URL}obtener/horario/${idhorario}`); // El ID debe estar presente en la URL
 };

@@ -10,6 +10,11 @@ export const getProfesorById = (idprofesor) => {
     return axios.get(`${base_URL}profesor/${idprofesor}`); // Asegúrate de pasar el id
 };
 
+export const getProfesoresConHorarios = () => {
+    return axios.get(`${base_URL}obtener/profesoresHorarios`);
+  };
+  
+
 export const postProfesor = (formData) => {
     return axios.post(`${base_URL}crear/profesor`, formData);
 };

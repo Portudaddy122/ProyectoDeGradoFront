@@ -17,6 +17,7 @@ import Header from '../Header.jsx';
 import iconcheck from '../../assets/icons/check.svg';
 import icondelete from '../../assets/icons/delete.svg';
 
+
 const ListEntrevistas = () => {
     const [entrevistas, setEntrevistas] = useState([]);
     const [fechaFiltro] = useState(new Date().toISOString().split("T")[0]);
@@ -128,7 +129,7 @@ const ListEntrevistas = () => {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Orden</TableCell>
+                                    <TableCell>Orden de cola</TableCell>
                                     <TableCell>Nombres</TableCell>
                                     <TableCell>Apellido Paterno</TableCell>
                                     <TableCell>Apellido Materno</TableCell>
@@ -159,21 +160,26 @@ const ListEntrevistas = () => {
                         <button className='action-btn complete-btn' onClick={() => openModal(ent, 'Completado')} disabled={loading}>
                             <img src={iconcheck} alt="Completado" />
                         </button>
-                        <button className='action-btn cancel-btn' onClick={() => openModal(ent, 'No realizado')} disabled={loading}>
+                        <button className='action-btn cancel-btn-entrevista' onClick={() => openModal(ent, 'No realizado')} disabled={loading}>
                             <img src={icondelete} alt="No realizado" />
                         </button>
                     </div>
                 )}
             </TableCell>
             <TableCell>
-                {formatEstado(ent.estado) === 'Pendiente' ? (
-                    <button className='action-btn create-acta-btn' onClick={() => navigate('/crearActa')} disabled={loading}>
-                        Ir
-                    </button>
-                ) : (
-                    <span>Acta cerrada</span>
-                )}
-            </TableCell>
+    {formatEstado(ent.estado) === 'Pendiente' ? (
+        <button
+            className='action-btn create-acta-btn'
+            onClick={() => navigate('/crearActa', { state: { idreservarentrevista: ent.idreservarentrevista } })}
+            disabled={loading}
+        >
+            Ir
+        </button>
+    ) : (
+        <span>Acta cerrada</span>
+    )}
+</TableCell>
+
         </TableRow>
     ))}
 </TableBody>

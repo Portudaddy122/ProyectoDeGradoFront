@@ -14,14 +14,14 @@ const Menu = () => {
   const [DropdownActas, setDropdownActas] = useState(false);
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
-    // Redirigir a "no autorizado" si el usuario no tiene ninguno de los roles permitidos
-    if (user && user.role !== 'Administrador' && user.role !== 'Profesor' && user.role !== 'Psicologo') {
+    if (user && !['Administrador', 'Profesor', 'Psicologo', 'Padre de Familia'].includes(user.role)) {
       navigate('/unauthorized');
     }
   }, [user, navigate]);
-
+  
   const handleLogout = () => {
     logout();
     navigate('/login'); // Redirigir al login después del logout
@@ -204,12 +204,12 @@ const Menu = () => {
               </li>
              
               <li className='sidebar-container'>
-                <Link to="/editar-acta" className="sidebar-link">
+                <Link to="/editarActa" className="sidebar-link">
                   Editar una acta
                 </Link>
               </li>
               <li className='sidebar-container'>
-                <Link to="/eliminar-acta" className="sidebar-link">
+                <Link to="/eliminaracta" className="sidebar-link">
                   Eliminar acta
                 </Link>
               </li>

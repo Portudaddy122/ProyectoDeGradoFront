@@ -1,18 +1,21 @@
 .entrevistas-container {
-    width: 90%;
+    width: 100%;
     margin: 20px auto;
     font-family: 'Kumbh Sans', sans-serif;
+    
   }
   
   .table-container {
     border: 2px solid black;
     border-radius: 8px;
     overflow: hidden;
+    
   }
   
   table {
     width: 100%;
     border-collapse: collapse;
+    
   }
   
   thead th {
@@ -55,7 +58,7 @@
     transform: scale(1.05);
   }
   
-  .cancel-btn {
+  .cancel-btn-entrevista {
     background-color: #992500; /* Rojo */
   }
   
@@ -96,7 +99,7 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
-    padding: 0 10px;
+    padding: 0 90px;
   }
   
   .date-picker-container {

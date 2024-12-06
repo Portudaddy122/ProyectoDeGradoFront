@@ -1,157 +1,101 @@
-/* Estilos básicos del formulario */
 .user-form-container {
-  max-width: 950px;
-  margin: 0 auto;
-  padding: 10px;
-  background-color: #f5f5f5;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: linear-gradient(to bottom, #ffffff, #f8f9fa);
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 3px solid black;
-  margin-left: 50px;
-  position: relative;
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
 }
 
 .user-form-container h2 {
   text-align: center;
+  color: #333;
   font-size: 24px;
-  color: #333;
   margin-bottom: 20px;
+  font-family: 'Roboto', sans-serif;
 }
 
-.user-form-container h3 {
-  text-align: center;
-  font-size: 15px;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.user-form-container form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+/* Grid layout para dos columnas */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+  gap: 20px; /* Espaciado entre columnas */
 }
 
 .form-group {
-  flex: 1 1 calc(50% - 20px);
   display: flex;
   flex-direction: column;
 }
 
-.user-form-container label {
+.form-group label {
   font-size: 14px;
-  color: black;
+  font-weight: bold;
+  color: #555;
   margin-bottom: 5px;
 }
 
-.user-form-container input,
-.user-form-container select {
+.form-group input,
+.form-group select {
   padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  border: 2px solid black;
+  border-radius: 5px;
+  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s;
 }
 
-.user-form-container input:focus,
-.user-form-container select:focus {
+.form-group input:focus,
+.form-group select:focus {
   border-color: #007bff;
   outline: none;
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
 }
 
-/* Estilos para los botones */
-.user-form-container .form-buttons {
+/* Botones */
+.form-buttons {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
   margin-top: 20px;
 }
 
-.user-form-container .form-buttons .submit-button {
-  padding: 12px;
-  font-size: 16px;
+.submit-button {
+  background-color: #28a745;
   color: #fff;
-  background-color: #006414;
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.user-form-container .form-buttons .submit-button:hover {
-  background-color: #009929;
-}
-
-.user-form-container .form-buttons .reset-button {
-  padding: 12px;
+  padding: 12px 20px;
+  border-radius: 5px;
   font-size: 16px;
-  color: #fff;
-  background-color: #d9534f;
-  border: none;
-  border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.user-form-container .form-buttons .reset-button:hover {
-  background-color: #e57373;
+.submit-button:hover {
+  background-color: #218838;
 }
 
-/* Mensajes de error y éxito */
-.user-form-container .error-message {
-  color: red;
-  font-size: 12px;
-  margin-top: 5px;
+.reset-button {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.user-form-container .success-message {
-  color: green;
-  font-size: 12px;
-  margin-top: 5px;
+.reset-button:hover {
+  background-color: #c82333;
 }
 
-/* Responsive para dispositivos medianos (tablet) */
-@media (max-width: 1024px) {
-  .form-group {
-    flex: 1 1 calc(100% - 20px); /* Los elementos ocupan el 100% del ancho */
-  }
-}
-
-/* Ajustes para dispositivos pequeños (smartphones) */
+/* Responsive para pantallas pequeñas */
 @media (max-width: 768px) {
-  .user-form-container {
-    padding: 15px;
+  .form-grid {
+    grid-template-columns: 1fr; /* Una columna */
   }
 
-  .form-group {
-    flex: 1 1 100%; /* Cada elemento ocupará el 100% del ancho */
-  }
-
-  .user-form-container input,
-  .user-form-container select {
-    font-size: 12px;
-  }
-
-  .user-form-container button {
-    font-size: 14px;
-  }
-}
-
-/* Ajustes adicionales para pantallas extra pequeñas */
-@media (max-width: 480px) {
-  .user-form-container h2 {
-    font-size: 20px;
-  }
-
-  .user-form-container h3 {
-    font-size: 13px;
-  }
-
-  .user-form-container .form-buttons {
-    flex-direction: column; /* Botones apilados en pantallas muy pequeñas */
-    align-items: stretch;
-  }
-
-  .user-form-container .form-buttons .submit-button,
-  .user-form-container .form-buttons .reset-button {
-    width: 100%;
-    margin-bottom: 10px; /* Espacio entre botones apilados */
+  .form-buttons {
+    flex-direction: column;
   }
 }

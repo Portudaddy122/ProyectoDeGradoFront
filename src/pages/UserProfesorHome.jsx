@@ -1,7 +1,7 @@
 import React from 'react';
 import Menu from '../components/Menu.jsx';
-import MenuProfesores from '../components/MenuProfesores.jsx';
-import FormActas from '../components/FormActas.jsx';
+
+import FormActas from '../components/ComponentsProfesores/ListEstudiantes.jsx';
 import Header from '../components/Header.jsx';
 
 

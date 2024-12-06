@@ -24,4 +24,7 @@ const login = async (email, contrasenia) => {
 
 export default {
   login,
+  
 };
+
+

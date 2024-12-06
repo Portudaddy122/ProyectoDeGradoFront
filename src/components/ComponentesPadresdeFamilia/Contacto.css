@@ -1,0 +1,181 @@
+/* General styles */
+.contacto-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(to bottom, #f0f8ff, #ffffff);
+    padding: 40px 20px;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin: 20px;
+    overflow: hidden;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .contacto-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.04;
+    z-index: -1;
+  }
+  
+  .marca-agua {
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  .contacto-content {
+    max-width: 700px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeIn 1.2s ease-in-out;
+  }
+  
+  .contacto-content h2 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    color: #2c3e50;
+  }
+  
+  .contacto-content p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  .contacto-info p {
+    font-size: 1.1em;
+    margin: 10px 0;
+    line-height: 1.6;
+    color: #444;
+  }
+  
+  .contacto-info p strong {
+    color: #2c3e50;
+    font-weight: 600;
+  }
+  
+  .contacto-images {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    animation: fadeInImages 1.5s ease-in-out;
+    
+  }
+  
+  .colegio-img {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    border: 2px solid #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: imageEntrance 1s forwards;
+  }
+  
+  .colegio-img:nth-child(1) {
+    animation-delay: 0.2s;
+  }
+  
+  .colegio-img:nth-child(2) {
+    animation-delay: 0.4s;
+  }
+  
+  .colegio-img:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInImages {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes imageEntrance {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive styles */
+  @media (min-width: 768px) {
+    .contacto-container {
+      padding: 50px;
+    }
+  
+    .contacto-content h2 {
+      font-size: 3em;
+    }
+  
+    .contacto-content p {
+      font-size: 1.4em;
+    }
+  
+    .contacto-images {
+      justify-content: space-evenly;
+    }
+  
+    .colegio-img {
+      max-width: 300px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .contacto-container {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+  
+    .contacto-content {
+      max-width: 50%;
+    }
+  
+    .contacto-images {
+      flex-direction: column;
+      gap: 30px;
+    }
+  
+    .colegio-img {
+      max-width: 350px;
+    }
+  }
+  
