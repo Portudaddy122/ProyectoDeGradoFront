@@ -9,34 +9,22 @@ import pdfIcon from '../assets/icons/pdf.svg';
 import wordIcon from '../assets/icons/word.svg';
 import printIcon from '../assets/icons/Printer.svg';
 
-const ExportActions = ({ data, context, selectedDate, title }) => {
-  const currentDate = new Date().toLocaleDateString();
-  const exportDate = selectedDate ? selectedDate : currentDate;
+const ExportActions = ({ data, context, selectedDate, title, columns }) => {
+  const exportDate = selectedDate || new Date().toLocaleDateString();
 
   // Generar el título automáticamente si no se proporciona
-  const exportTitle =
-    title || 'Control de Usuarios con Ingresos';
+  const exportTitle = title || 'Reporte';
 
   const exportToPDF = () => {
     const doc = new jsPDF();
     doc.text(`Fecha: ${exportDate}`, 14, 10);
     doc.text(exportTitle, 14, 20);
 
-    // Definir las columnas para el PDF
-    const tableColumn = [
-      'Nombre Completo',
-      'Rol',
-      'Fecha de Ingreso',
-      'Hora de Ingreso',
-    ];
-
-    // Mapear las filas desde los datos
-    const tableRows = data.map((item) => [
-      item.nombrecompleto || 'Sin registro',
-      item.rol || 'Sin registro',
-      item.fechaingreso?.split('T')[0] || 'Sin registro', // Formatear la fecha
-      item.horaingreso || 'Sin registro',
-    ]);
+    // Generar columnas y filas dinámicamente según la configuración
+    const tableColumn = columns.map((col) => col.title);
+    const tableRows = data.map((item) =>
+      columns.map((col) => item[col.field] || 'Sin registro')
+    );
 
     // Generar la tabla en el PDF
     doc.autoTable({
@@ -46,21 +34,22 @@ const ExportActions = ({ data, context, selectedDate, title }) => {
     });
 
     // Guardar el archivo PDF
-    doc.save(`${context || 'datos'}.pdf`);
+    doc.save(`${context || 'reporte'}.pdf`);
   };
 
   const exportToExcel = () => {
-    const worksheetData = data.map((item) => ({
-      'Nombre Completo': item.nombrecompleto || 'Sin registro',
-      Rol: item.rol || 'Sin registro',
-      'Fecha de Ingreso': item.fechaingreso?.split('T')[0] || 'Sin registro',
-      'Hora de Ingreso': item.horaingreso || 'Sin registro',
-    }));
+    const worksheetData = data.map((item) => {
+      const row = {};
+      columns.forEach((col) => {
+        row[col.title] = item[col.field] || 'Sin registro';
+      });
+      return row;
+    });
 
     const worksheet = xlsx.utils.json_to_sheet(worksheetData);
     const workbook = xlsx.utils.book_new();
     xlsx.utils.book_append_sheet(workbook, worksheet, context || 'Datos');
-    xlsx.writeFile(workbook, `${context || 'datos'}.xlsx`);
+    xlsx.writeFile(workbook, `${context || 'reporte'}.xlsx`);
   };
 
   const exportToWord = () => {
@@ -69,20 +58,16 @@ const ExportActions = ({ data, context, selectedDate, title }) => {
       <h2>${exportTitle}</h2>
       <table border="1" cellpadding="5" cellspacing="0">
         <tr>
-          <th>Nombre Completo</th>
-          <th>Rol</th>
-          <th>Fecha de Ingreso</th>
-          <th>Hora de Ingreso</th>
+          ${columns.map((col) => `<th>${col.title}</th>`).join('')}
         </tr>
     `;
 
     data.forEach((item) => {
       content += `
         <tr>
-          <td>${item.nombrecompleto || 'Sin registro'}</td>
-          <td>${item.rol || 'Sin registro'}</td>
-          <td>${item.fechaingreso?.split('T')[0] || 'Sin registro'}</td>
-          <td>${item.horaingreso || 'Sin registro'}</td>
+          ${columns
+            .map((col) => `<td>${item[col.field] || 'Sin registro'}</td>`)
+            .join('')}
         </tr>
       `;
     });
@@ -95,7 +80,7 @@ const ExportActions = ({ data, context, selectedDate, title }) => {
 
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `${context || 'datos'}.doc`;
+    link.download = `${context || 'reporte'}.doc`;
     link.click();
   };
 

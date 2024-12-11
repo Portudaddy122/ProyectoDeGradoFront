@@ -34,6 +34,7 @@ import RegistroDatos from './components/ComponentesPadresdeFamilia/RegistroDatos
 import ConfirmacionCorreo from './components/ComponentesPadresdeFamilia/ConfirmacionCorreo.jsx';
 import ControlIngresos from './components/ControlIngresos.jsx';
 import Configuraciones from './components/Configuraciones.jsx';
+import RecuperarUsuarios from './components/RecuperarUsuarios.jsx';
 
 
 const App = () => {
@@ -89,10 +90,14 @@ const AppContent = () => {
               </ProtectedRoute>
             }
           />
-
-
-
-
+          <Route
+            path="/listaProfesoresEntrevistasadas"
+            element={
+              <ProtectedRoute role= "Padre de Familia">
+                <ListProfesoresInfo />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/registrodecontrasenia"
             element={<RegistroContraseña />}
@@ -107,10 +112,6 @@ const AppContent = () => {
             element={<RegistroDatos />}
           />
           
-          <Route
-            path="/listaProfesoresEntrevistasadas"
-            element={<ListProfesoresInfo />}
-          />
           <Route
             path="/register"
             element={<RegistroPadres />}
@@ -199,6 +200,14 @@ const AppContent = () => {
             element={
               <ProtectedRoute role="Administrador">
                 <ControlIngresos />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/usuariosRecuperados"
+            element={
+              <ProtectedRoute role="Administrador">
+                <RecuperarUsuarios />
               </ProtectedRoute>
             }
           />

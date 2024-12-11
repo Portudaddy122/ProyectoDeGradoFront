@@ -8,7 +8,7 @@ export const getUsuarios = async () => {
 
 // Servicio para filtrar usuarios
 export const filterUsuarios = (searchTerm) => {
-    return axios.get(`${baseURL}/usuarios/filtrar`, { params: { searchTerm } });
+    return axios.get(`${baseURL}usuarios/filtrar`, { params: { searchTerm } });
   };
 
   // Servicio para obtener todos los usuarios del sistema
@@ -85,6 +85,28 @@ export const getCantidadUsuariosConIngresos = async () => {
       return response.data; // Devuelve { cantidad: X }
     } catch (error) {
       console.error('Error al obtener la cantidad de usuarios con ingresos:', error);
+      throw error; // Lanza el error para manejarlo en el frontend
+    }
+  };
+
+  // Servicio para listar usuarios inactivos
+export const listarUsuariosInactivos = async () => {
+    try {
+      const response = await axios.get(`${base_URL}usuarios/inactivos`);
+      return response.data;
+    } catch (error) {
+      console.error('Error al listar usuarios inactivos:', error);
+      throw error; // Lanza el error para manejarlo en el frontend
+    }
+  };
+  
+  // Servicio para activar un usuario (cambiar estado a true)
+  export const activarUsuario = async (id, rol) => {
+    try {
+      const response = await axios.put(`${base_URL}usuarios/activar`, { id, rol });
+      return response.data;
+    } catch (error) {
+      console.error('Error al activar el usuario:', error);
       throw error; // Lanza el error para manejarlo en el frontend
     }
   };

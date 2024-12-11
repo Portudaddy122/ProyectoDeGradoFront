@@ -58,7 +58,7 @@ function FormActas() {
       }
     } else {
       setToast({
-        message: 'No se encontró un identificador de reserva de entrevista.',
+        message: 'No se puede crear una acta del estudiante. Debe existir una entrevista',
         type: 'error',
         show: true,
       });

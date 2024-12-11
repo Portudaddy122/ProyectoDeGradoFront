@@ -52,8 +52,18 @@ const UserTable = ({ users, onView, onEdit, onDelete, onCite, hideDefaultActions
           style={{ margin: "10px", border: '2px solid black', borderRadius: "8px" }}
         />
        
-       <ExportActions data={users} context="padres" selectedDate={new Date().toLocaleDateString()} title={exportTitle} />
-
+       <ExportActions
+  data={users}
+  context="Usuarios"
+  selectedDate={new Date().toLocaleDateString()}
+  title={exportTitle || 'Listado de Usuarios'}
+  columns={[
+    { title: 'Nombres', field: 'nombres' },
+    { title: 'Apellido Paterno', field: 'apellidopaterno' },
+    { title: 'Apellido Materno', field: 'apellidomaterno' },
+    { title: 'Rol', field: 'rol' },
+  ]}
+/>
 
 
 

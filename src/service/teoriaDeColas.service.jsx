@@ -41,3 +41,10 @@ export const obtenerEntrevistasPorPadre = (idPadre) => {
   };
   
 
+// teoriaDeColas.service.jsx
+export const obtenerListaEntrevistaPorFecha = (fecha, idProfesor, idPsicologo) => {
+    // Aquí se ajusta la URL para incluir los parámetros en la URL
+    return axios.get(`${base_URL}listaEntrevistas/${fecha}`, {
+        params: { idProfesor, idPsicologo },
+    });
+};

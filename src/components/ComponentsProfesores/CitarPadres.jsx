@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getPadreById } from '../../service/PadreDeFamilia.jsx';
-import { agendarEntrevista, enviarCorreo } from '../../service/teoriaDeColas.service.jsx';
+import { agendarEntrevista } from '../../service/teoriaDeColas.service.jsx';
 import { getMotivos } from '../../service/motivo.service.jsx';
 import { getMateria } from '../../service/materia.service.jsx';
 import './CitarPadres.css';
@@ -21,7 +21,6 @@ const CitarPadres = () => {
     motivo: '',
     materia: '',
     fecha: '',
-    horario: '',
     descripcion: '',
   });
 
@@ -44,10 +43,13 @@ const CitarPadres = () => {
             motivo: '',
             materia: '',
             fecha: '',
-            horario: '',
             descripcion: '',
           });
         } catch (error) {
+          setToast({
+            message: 'Error al obtener los datos del padre.',
+            type: 'error',
+          });
           console.error('Error al obtener los datos del padre:', error);
         }
       };
@@ -61,6 +63,10 @@ const CitarPadres = () => {
         const response = await getMotivos();
         setMotivos(response.data);
       } catch (error) {
+        setToast({
+          message: 'Error al obtener los motivos.',
+          type: 'error',
+        });
         console.error('Error al obtener motivos:', error);
       }
     };
@@ -73,6 +79,10 @@ const CitarPadres = () => {
         const response = await getMateria();
         setMaterias(response.data || []);
       } catch (error) {
+        setToast({
+          message: 'Error al obtener materias.',
+          type: 'error',
+        });
         console.error('Error al obtener materias:', error);
         setMaterias([]);
       }
@@ -87,7 +97,7 @@ const CitarPadres = () => {
     if (dayOfWeek === 5 || dayOfWeek === 6) {
       setToast({
         message: "No se puede seleccionar sábados o domingos. Por favor, elige un día hábil.",
-        type: "error"
+        type: "error",
       });
       setFormData({ ...formData, fecha: '' });
     } else {
@@ -105,7 +115,7 @@ const CitarPadres = () => {
     setFormData({
       ...formData,
       motivo: parseInt(e.target.value),
-      nombremotivo: selectedMotivo ? selectedMotivo.nombremotivo : ''
+      nombremotivo: selectedMotivo ? selectedMotivo.nombremotivo : '',
     });
   };
 
@@ -115,7 +125,6 @@ const CitarPadres = () => {
       motivo: '',
       materia: '',
       fecha: '',
-      horario: '',
       descripcion: '',
     }));
   };
@@ -123,29 +132,53 @@ const CitarPadres = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+  
     const usuario = JSON.parse(localStorage.getItem('user'));
+    console.log("Usuario logueado desde localStorage:", usuario);
+  
     if (!usuario || (usuario.role !== 'Profesor' && usuario.role !== 'Psicologo')) {
       setToast({ message: 'Solo profesores y psicólogos pueden agendar citas.', type: 'error' });
       setIsLoading(false);
       return;
     }
-
+  
     const idProfesor = usuario.role === 'Profesor' ? usuario.id : null;
     const idPsicologo = usuario.role === 'Psicologo' ? usuario.id : null;
-
-    const { motivo, nombremotivo, materia, fecha, descripcion } = formData;
+    const idhorario = usuario.idhorario; // Verificar que idhorario esté disponible en el usuario logueado
+  
+    const { motivo, materia, fecha, descripcion } = formData;
     const idPadre = location.state?.idPadre;
     const idMotivo = parseInt(motivo);
     const idMateria = parseInt(materia);
-
+  
+    // Validar que todos los datos necesarios estén presentes
     if ((!idProfesor && !idPsicologo) || !idPadre || isNaN(idMotivo) || !materia || !fecha || !descripcion) {
       setToast({ message: 'Por favor, completa todos los campos correctamente.', type: 'error' });
       setIsLoading(false);
+      console.error("Error en la validación de datos:", {
+        idProfesor,
+        idPsicologo,
+        idPadre,
+        idMotivo,
+        idMateria,
+        fecha,
+        descripcion,
+      });
       return;
     }
-
+  
     try {
+      console.log("Datos enviados al backend para agendar la cita:", {
+        idProfesor,
+        idPsicologo,
+        idPadre,
+        fecha,
+        descripcion,
+        idMotivo,
+        idMateria,
+        idhorario,
+      });
+  
       const response = await agendarEntrevista({
         idProfesor,
         idPsicologo,
@@ -154,35 +187,19 @@ const CitarPadres = () => {
         descripcion,
         idMotivo,
         idMateria,
+        idhorario, // Asegúrate de enviar este valor
       });
-
+  
       if (response.status === 201) {
-        const { horafinentrevista, idreservarentrevista } = response.data;
-
-        const profesorData = {
-          id: usuario.id,
-          nombres: usuario.nombres,
-          apellidopaterno: usuario.apellidopaterno,
-          apellidomaterno: usuario.apellidomaterno,
-          role: usuario.role,
-        };
-
-        await enviarCorreo({
-          idPadre,
-          motivo: nombremotivo,
-          materia: materias.find(m => m.idmateria === idMateria)?.nombre || 'Materia desconocida',
-          fecha,
-          horario: horafinentrevista,
-          descripcion,
-          profesor: profesorData,
-          idReservarEntrevista: idreservarentrevista,
-        });
-
-        setToast({ message: 'Cita agendada y correo enviado exitosamente.', type: 'success' });
+        setToast({ message: 'Cita agendada exitosamente.', type: 'success' });
         handleClear();
       }
     } catch (error) {
-      setToast({ message: 'Error al agendar la cita o enviar el correo.', type: 'error' });
+      setToast({
+        message: error.response?.data?.error || 'Error al agendar la cita.',
+        type: 'error',
+      });
+      console.error("Error al agendar la cita:", error.response?.data || error.message);
     } finally {
       setIsLoading(false);
     }

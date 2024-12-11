@@ -23,9 +23,19 @@ const ListaProfesoresEntrevista = () => {
     fetchProfesores();
   }, []);
 
-  const handleNavigate = (idprofesor, nombre, materia, dia, horainicio, horafin) => {
+  const handleNavigate = (row) => {
+    const isPsicologo = row.materia === "Psicólogo";
+
     navigate('/agendarEntrevistaPadre', {
-      state: { idProfesor: idprofesor, nombre, materia, dia, horainicio, horafin },
+      state: {
+        idProfesor: isPsicologo ? null : row.id, // Enviar idProfesor solo si no es psicólogo
+        idPsicologo: isPsicologo ? row.id : null, // Enviar idPsicologo solo si es psicólogo
+        nombre: row.nombre,
+        materia: row.materia,
+        dia: row.dia,
+        horainicio: row.horainicio,
+        horafin: row.horafin,
+      },
     });
   };
 
@@ -33,12 +43,12 @@ const ListaProfesoresEntrevista = () => {
     <div className="container-scrollable">
       <MenuPadres />
       <Paper elevation={3} className="table-container">
-        <h1 className="title">SELECCIONE EL PROFESOR</h1>
+        <h1 className="title">SELECCIONE EL PROFESOR O PSICÓLOGO</h1>
         <div className="table-scrollable">
           <table className="interview-table">
             <thead>
               <tr>
-                <th>Nombre del profesor</th>
+                <th>Nombre</th>
                 <th>Materia</th>
                 <th>Día de entrevista</th>
                 <th>Agendar una cita</th>
@@ -46,7 +56,7 @@ const ListaProfesoresEntrevista = () => {
             </thead>
             <tbody>
               {rows.map((row) => (
-                <tr key={row.idprofesor}>
+                <tr key={`${row.tipo}-${row.id}`}>
                   <td>{row.nombre}</td>
                   <td>{row.materia}</td>
                   <td>{row.dia}</td>
@@ -56,9 +66,7 @@ const ListaProfesoresEntrevista = () => {
                       color="success"
                       size="small"
                       className="button-go"
-                      onClick={() =>
-                        handleNavigate(row.idprofesor, row.nombre, row.materia, row.dia, row.horainicio, row.horafin)
-                      }
+                      onClick={() => handleNavigate(row)}
                     >
                       Ir
                     </Button>

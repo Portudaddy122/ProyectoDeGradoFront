@@ -2,37 +2,45 @@ import React, { useEffect, useState } from "react";
 import "./HistorialEntrevistas.css";
 import { obtenerEntrevistasPorPadre } from "../../service/teoriaDeColas.service.jsx";
 import MenuPadres from "./MenuPadres.jsx";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, TextField } from "@mui/material";
 
 const HistorialEntrevistas = () => {
-    const [citas, setCitas] = useState([]); // Estado para almacenar las citas
-    const [loading, setLoading] = useState(true); // Estado para manejar la carga
-    const [error, setError] = useState(null); // Estado para manejar errores
+    const [citas, setCitas] = useState([]);
+    const [filteredCitas, setFilteredCitas] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [filters, setFilters] = useState({
+        fecha: "",
+        profesor: "",
+        materia: "",
+        estado: "",
+    });
 
-    // Obtener el idPadre desde el localStorage
     let idPadre = null;
     try {
-        const user = JSON.parse(localStorage.getItem("user")); // Parsear el JSON almacenado
-        idPadre = user?.id; // Acceder al campo `id` dentro de `user`
+        const user = JSON.parse(localStorage.getItem("user"));
+        idPadre = user?.id;
     } catch (err) {
         console.error("Error al obtener el idPadre desde el localStorage:", err);
         idPadre = null;
     }
 
     useEffect(() => {
-        // Validar que el idPadre esté disponible
         if (!idPadre) {
             setError("No se encontró el idPadre en el localStorage o está malformateado.");
             setLoading(false);
             return;
         }
 
-        // Llamar al servicio para obtener el historial de citas
         const fetchCitas = async () => {
             try {
                 setLoading(true);
                 const response = await obtenerEntrevistasPorPadre(idPadre);
                 setCitas(response.data.data);
-                setError(null); // Reiniciar el error si se obtienen datos exitosamente
+                setFilteredCitas(response.data.data);
+                setError(null);
                 setLoading(false);
             } catch (err) {
                 console.error("Error al obtener el historial de citas:", err);
@@ -44,48 +52,122 @@ const HistorialEntrevistas = () => {
         fetchCitas();
     }, [idPadre]);
 
-    // Renderizar el contenido
+    const handlePageChange = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleRowsPerPageChange = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    const handleFilterChange = (event) => {
+        const { name, value } = event.target;
+        setFilters({ ...filters, [name]: value });
+
+        const filtered = citas.filter((cita) =>
+            (!filters.fecha || cita.fecha.includes(filters.fecha)) &&
+            (!filters.profesor || cita.profesor.toLowerCase().includes(filters.profesor.toLowerCase())) &&
+            (!filters.materia || cita.materia.toLowerCase().includes(filters.materia.toLowerCase())) &&
+            (!filters.estado || cita.estado.toLowerCase().includes(filters.estado.toLowerCase()))
+        );
+
+        setFilteredCitas(filtered);
+    };
+
     return (
         <div className="historial-container">
-            <MenuPadres /> {/* Siempre se muestra el menú */}
+            <MenuPadres />
             {loading ? (
                 <p className="loading-text">Cargando datos...</p>
             ) : error ? (
                 <p className="error-text">{error}</p>
             ) : (
-                <div className="table-container">
+                <Paper className="table-container">
                     <h2 className="table-title">HISTORIAL DE CITAS</h2>
-                    <table className="historial-table">
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Profesor</th>
-                                <th>Materia</th>
-                                <th>Hora</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {citas.length > 0 ? (
-                                citas.map((cita, index) => (
-                                    <tr key={index}>
-                                        <td>{cita.fecha}</td>
-                                        <td>{cita.profesor}</td>
-                                        <td>{cita.materia}</td>
-                                        <td>{cita.horafinentrevista ? cita.horafinentrevista : "No especificada"}</td>
-                                        <td>{cita.estado}</td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="5" className="no-citas">
-                                        Usted no realizó entrevistas anteriormente.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                    <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
+                        <TextField
+                            label="Filtrar por Fecha"
+                            type="date"
+                            name="fecha"
+                            value={filters.fecha}
+                            onChange={handleFilterChange}
+                            InputLabelProps={{ shrink: true }}
+                            variant="outlined"
+                            size="small"
+                        />
+                        <TextField
+                            label="Profesor"
+                            name="profesor"
+                            value={filters.profesor}
+                            onChange={handleFilterChange}
+                            variant="outlined"
+                            size="small"
+                        />
+                        <TextField
+                            label="Materia"
+                            name="materia"
+                            value={filters.materia}
+                            onChange={handleFilterChange}
+                            variant="outlined"
+                            size="small"
+                        />
+                        <TextField
+                            label="Estado"
+                            name="estado"
+                            value={filters.estado}
+                            onChange={handleFilterChange}
+                            variant="outlined"
+                            size="small"
+                        />
+                    </div>
+                    <TableContainer>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Fecha</TableCell>
+                                    <TableCell>Profesor</TableCell>
+                                    <TableCell>Materia</TableCell>
+                                    <TableCell>Hora</TableCell>
+                                    <TableCell>Estado</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {filteredCitas.length > 0 ? (
+                                    filteredCitas
+                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                        .map((cita, index) => (
+                                            <TableRow key={index}>
+                                                <TableCell>{cita.fecha}</TableCell>
+                                                <TableCell>{cita.profesor}</TableCell>
+                                                <TableCell>{cita.materia}</TableCell>
+                                                <TableCell>
+                                                    {cita.horafinentrevista ? cita.horafinentrevista : "No especificada"}
+                                                </TableCell>
+                                                <TableCell>{cita.estado}</TableCell>
+                                            </TableRow>
+                                        ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={5} style={{ textAlign: "center" }}>
+                                            No se encontraron entrevistas con los filtros seleccionados.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        component="div"
+                        count={filteredCitas.length}
+                        page={page}
+                        onPageChange={handlePageChange}
+                        rowsPerPage={rowsPerPage}
+                        onRowsPerPageChange={handleRowsPerPageChange}
+                        rowsPerPageOptions={[5, 10, 15]}
+                        labelRowsPerPage="Filas por página"
+                    />
+                </Paper>
             )}
         </div>
     );

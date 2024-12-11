@@ -121,6 +121,14 @@ const Menu = () => {
                   </i>
                 </Link>
               </li>
+              <li className='sidebar-container'>
+                <Link to="/usuariosRecuperados" className="sidebar-link">
+                  Recuperacion de Usuarios
+                  <i className="Icon-container-menu">
+                    <img src={userIcon} alt='Control de Ingresos' />
+                  </i>
+                </Link>
+              </li>
             </ul>
           )}
 
