@@ -7,7 +7,8 @@ import { getMotivos } from '../../service/motivo.service';
 import { crearReservaEntrevista } from '../../service/teoriaDeColas.service';
 import './AgendarEntrevista.css';
 import MenuPadres from './MenuPadres';
-import Toast from '../../components/Toast'; // Importar el componente Toast
+import Toast from '../../components/Toast';
+import FullScreenLoader from '../ComponentsProfesores/ProgresoCircular.jsx'; // Importar el componente ProgresoCircular
 
 registerLocale('es', es);
 
@@ -19,9 +20,10 @@ const AgendarEntrevista = () => {
   const [motivos, setMotivos] = useState([]);
   const [idMotivo, setIdMotivo] = useState('');
   const [fecha, setFecha] = useState(null);
-  const [showToast, setShowToast] = useState(false); // Estado para mostrar/ocultar el toast
-  const [toastMessage, setToastMessage] = useState(''); // Mensaje del toast
-  const [toastType, setToastType] = useState('success'); // Tipo de toast: success o error
+  const [isLoading, setIsLoading] = useState(false); // Estado para mostrar el loader
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState('success');
 
   useEffect(() => {
     const fetchMotivos = async () => {
@@ -60,14 +62,14 @@ const AgendarEntrevista = () => {
   const handleAgendar = async () => {
     const usuario = JSON.parse(localStorage.getItem('user'));
     const idPadre = usuario?.id;
-  
+
     if ((!idProfesor && !idPsicologo) || !idMotivo || !fecha || !idPadre) {
       setToastMessage('Por favor complete todos los campos obligatorios.');
       setToastType('error');
       setShowToast(true);
       return;
     }
-  
+
     const data = {
       idProfesor: idProfesor || null,
       idPsicologo: idPsicologo || null,
@@ -82,31 +84,35 @@ const AgendarEntrevista = () => {
         horainicio,
       },
     };
-  
+
+    setIsLoading(true); // Mostrar el loader
     try {
-        const response = await crearReservaEntrevista(data);
-        const { message, success } = response.data;
-      
-        setToastMessage(message);
-        setToastType(success ? 'success' : 'error');
-        setShowToast(true);
-      
-        if (success) {
-          setTimeout(() => {
-            setShowToast(false);
-            navigate('/listaprofesoresentrevistas');
-          }, 5000);
-        }
-      } catch (error) {
-        console.error('Error al agendar entrevista:', error);
-      
-        const errorMessage = error.response?.data?.message || 'Hubo un error al intentar agendar la entrevista. La agenda del profesor esta llena';
-        setToastMessage(errorMessage);
-        setToastType('error');
-        setShowToast(true);
+      const response = await crearReservaEntrevista(data);
+      const { message, success } = response.data;
+
+      setToastMessage(message);
+      setToastType(success ? 'success' : 'error');
+      setShowToast(true);
+
+      if (success) {
+        setTimeout(() => {
+          setShowToast(false);
+          navigate('/listaprofesoresentrevistas');
+        }, 5000);
       }
+    } catch (error) {
+      console.error('Error al agendar entrevista:', error);
+
+      const errorMessage =
+        error.response?.data?.message ||
+        'Error al agendar la entrevista. La agenda del profesor está llena.';
+      setToastMessage(errorMessage);
+      setToastType('error');
+      setShowToast(true);
+    } finally {
+      setIsLoading(false); // Ocultar el loader
+    }
   };
-  
 
   return (
     <div className="container">
@@ -167,7 +173,8 @@ const AgendarEntrevista = () => {
         </button>
       </div>
 
-      {/* Mostrar el Toast con el mensaje */}
+      {isLoading && <FullScreenLoader />} {/* Mostrar el componente ProgresoCircular */}
+
       {showToast && (
         <Toast message={toastMessage} type={toastType} onClose={() => setShowToast(false)} />
       )}
